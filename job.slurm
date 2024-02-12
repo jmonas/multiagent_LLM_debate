@@ -16,6 +16,5 @@ module load cudatoolkit/11.1
 module load cudnn/cuda-11.x/8.2.0
 module load anaconda3/2023.9
 conda activate LLM_MA
-pip install transformers bitsandbytes>=0.39.0 -q
 
 python load_models.py
