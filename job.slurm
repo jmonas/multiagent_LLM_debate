@@ -16,7 +16,7 @@ module load cudatoolkit/11.1
 module load cudnn/cuda-11.x/8.2.0
 module load anaconda3/2023.9
 conda activate LLM_MA
-conda install -c huggingface transformers
-pip install transformers
+pip install --upgrade transformers
+
 
 python load_models.py
