@@ -14,7 +14,7 @@ print("Model Loaded..!")
  
 start_time = time.time()
  
-input_text = "Calculate 86+81+9."
+input_text = "Calculate: 86+81+9."
  
 inputs = tokenizer(input_text, return_tensors="pt")
 input_ids = inputs["input_ids"].to("cuda")
