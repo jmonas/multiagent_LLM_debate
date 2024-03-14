@@ -14,7 +14,7 @@ print("Model Loaded..!")
  
 start_time = time.time()
  
-input_text = "What is the result of 86-25-94+81+9*30? Make sure to state your answer at the end of the response."
+input_text = "What is the result of 86+81+9? Make sure to state your answer at the end of the response."
  
 inputs = tokenizer(input_text, return_tensors="pt")
 input_ids = inputs["input_ids"].to("cuda")
@@ -23,10 +23,11 @@ output = model.generate(
    input_ids,
    attention_mask=inputs["attention_mask"].to("cuda"),
    do_sample=True,
-   max_length=150,
-   temperature=0.8,
+   max_length=80,
+   temperature=0.5,
    use_cache=True,
-   top_p=0.9
+   top_p=0.8,  # Slightly more conservative
+   top_k=50  # Introducing top_k sampling
 )
  
 end_time = time.time() - start_time
