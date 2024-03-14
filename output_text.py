@@ -1,8 +1,8 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 print("start")
-tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B", cache_dir=".cache")
-model = AutoModelForCausalLM.from_pretrained("EleutherAI/gpt-j-6B",torch_dtype=torch.float16, cache_dir=".cache")
+tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B", cache_dir="/scratch/network/jmonas/.cache/")
+model = AutoModelForCausalLM.from_pretrained("EleutherAI/gpt-j-6B",torch_dtype=torch.float16, cache_dir="/scratch/network/jmonas/.cache/")
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("device selection")
 # Move the model to the selected device
