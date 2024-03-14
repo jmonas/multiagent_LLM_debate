@@ -14,7 +14,7 @@ print("Model Loaded..!")
  
 start_time = time.time()
  
-input_text = "What is the result of 86+81+9? Make sure to state your answer at the end of the response."
+input_text = "What is the result of 86+81+9? Only state the answer."
  
 inputs = tokenizer(input_text, return_tensors="pt")
 input_ids = inputs["input_ids"].to("cuda")
