@@ -17,4 +17,4 @@ module load cudnn/cuda-11.x/8.2.0
 module load anaconda3/2023.9
 conda activate torch_llm
 
-python output_text.py
+python trail.py
