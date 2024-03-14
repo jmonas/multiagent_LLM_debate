@@ -35,9 +35,10 @@ print()
 input_id_A_2 = tokenizer(generate_round_query(decoded_output_B_1), return_tensors="pt").to("cuda")
 input_id_B_2 = tokenizer(generate_round_query(decoded_output_A_1), return_tensors="pt").to("cuda")
 
+print("token_length", len(input_id_A_2["input_ids"]))
 
-output_A_2 = model_A.generate(**input_id_A_2, max_new_tokens=250, do_sample = True, temperature = .2)
-output_B_2 = model_B.generate(**input_id_B_2, max_new_tokens=250, do_sample = True, temperature = .2)
+output_A_2 = model_A.generate(**input_id_A_2, max_new_tokens=350, do_sample = True, temperature = .2)
+output_B_2 = model_B.generate(**input_id_B_2, max_new_tokens=350, do_sample = True, temperature = .2)
 
 
 decoded_output_A_2 = tokenizer.decode(output_A_2[0])
