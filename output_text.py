@@ -8,7 +8,6 @@ model = AutoModelForCausalLM.from_pretrained("google/gemma-2b-it", device_map="a
 
 input_text = "Write me a poem about Machine Learning."
 input_ids = tokenizer(input_text, return_tensors="pt").to("cuda")
-print(input_ids)
-print("done")
-# outputs = model.generate(input_ids=input_ids, max_new_tokens=150)
-# print(tokenizer.decode(outputs[0]))
+
+outputs = model.generate(**input_ids, max_new_tokens=150)
+print(tokenizer.decode(outputs[0]))
