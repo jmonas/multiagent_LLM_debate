@@ -23,7 +23,7 @@ output = model.generate(
    input_ids,
    attention_mask=inputs["attention_mask"].to("cuda"),
    do_sample=True,
-   max_length=60,
+   max_length=80,
    temperature=0.5,
    use_cache=True,
    top_p=0.8,  # Slightly more conservative
