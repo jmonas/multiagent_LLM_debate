@@ -1,5 +1,6 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
+import random
 
 # Initialize the models and tokenizer
 tokenizer = AutoTokenizer.from_pretrained("gg-hf/gemma-2b-it", cache_dir="/scratch/network/jmonas/.cache/")
@@ -31,13 +32,24 @@ def clean_text(response):
     # Strip leading and trailing whitespace and newlines
     return extracted_text.strip()
 
+# Randomly generate three numbers between 1-30
+numbers = random.sample(range(1, 31), 3)
+
+# Randomly choose two different mathematical operators from the set
+operators = random.sample(['+', '-', '*'], 2)
+
+# Format the mathematical expressions as strings
+expression = f"{numbers[0]}{operators[0]}{numbers[1]}{operators[1]}{numbers[2]}"
+
+print("EQUATION: ", expression)
+print("CORRECT ANSWER: ", eval(expression))
 # Initial chat setup
 chat_history_A = [
-    {"role": "user", "content": "What is the result of: 4+23*6? Make sure to state your answer at the end of the response."},
+    {"role": "user", "content": f"What is the result of: {expression}? Make sure to state your answer at the end of the response."},
 ]
 
 chat_history_B = [
-    {"role": "user", "content": "What is the result of: 4+23*6? Make sure to state your answer at the end of the response."},
+    {"role": "user", "content": f"What is the result of: {expression}? Make sure to state your answer at the end of the response."},
 ]
 
 # Function to run the debate for a specified number of rounds
@@ -52,7 +64,7 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         
         # Generate a response from model_A
         inputs = format_chat(chat_history_A)
-        outputs_A = model_A.generate(input_ids = inputs, max_new_tokens=150, do_sample = True, temperature = .9)
+        outputs_A = model_A.generate(input_ids = inputs, max_new_tokens=150, do_sample = True, temperature = .6)
         response_A = tokenizer.decode(outputs_A[0], skip_special_tokens=True)
         response_A_cleaned = clean_text(response_A)
 
@@ -62,7 +74,7 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         
         # Generate a response from model_B
         inputs = format_chat(chat_history_B)
-        outputs_B = model_B.generate(input_ids = inputs, max_new_tokens=150, do_sample = True, temperature = .9)
+        outputs_B = model_B.generate(input_ids = inputs, max_new_tokens=150, do_sample = True, temperature = .6)
         response_B = tokenizer.decode(outputs_B[0], skip_special_tokens=True)
         response_B_cleaned = clean_text(response_B)
 
