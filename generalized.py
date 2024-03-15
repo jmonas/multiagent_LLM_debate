@@ -3,9 +3,9 @@ import torch
 import random
 
 # Initialize the models and tokenizer
-tokenizer = AutoTokenizer.from_pretrained("gg-hf/gemma-2b-it", cache_dir="/scratch/network/jmonas/.cache/")
-model_A = AutoModelForCausalLM.from_pretrained("gg-hf/gemma-2b-it", device_map="auto", torch_dtype=torch.float16, cache_dir="/scratch/network/jmonas/.cache/")
-model_B = AutoModelForCausalLM.from_pretrained("gg-hf/gemma-2b-it", device_map="auto", torch_dtype=torch.float16, cache_dir="/scratch/network/jmonas/.cache/")
+tokenizer = AutoTokenizer.from_pretrained("gg-hf/gemma-7b-it", cache_dir="/scratch/network/jmonas/.cache/")
+model_A = AutoModelForCausalLM.from_pretrained("gg-hf/gemma-7b-it", device_map="auto", torch_dtype=torch.float16, cache_dir="/scratch/network/jmonas/.cache/")
+model_B = AutoModelForCausalLM.from_pretrained("gg-hf/gemma-7b-it", device_map="auto", torch_dtype=torch.float16, cache_dir="/scratch/network/jmonas/.cache/")
 
 # Define a function to format the chat history with the chat template
 def format_chat(chat_history):
