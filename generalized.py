@@ -2,9 +2,9 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 
 # Initialize the models and tokenizer
-tokenizer = AutoTokenizer.from_pretrained("google/gemma-2b-it", cache_dir="/scratch/network/jmonas/.cache/")
-model_A = AutoModelForCausalLM.from_pretrained("google/gemma-2b-it", device_map="auto", torch_dtype=torch.float16, cache_dir="/scratch/network/jmonas/.cache/")
-model_B = AutoModelForCausalLM.from_pretrained("google/gemma-2b-it", device_map="auto", torch_dtype=torch.float16, cache_dir="/scratch/network/jmonas/.cache/")
+tokenizer = AutoTokenizer.from_pretrained("gg-hf/gemma-2b-it", cache_dir="/scratch/network/jmonas/.cache/")
+model_A = AutoModelForCausalLM.from_pretrained("gg-hf/gemma-2b-it", device_map="auto", torch_dtype=torch.float16, cache_dir="/scratch/network/jmonas/.cache/")
+model_B = AutoModelForCausalLM.from_pretrained("gg-hf/gemma-2b-it", device_map="auto", torch_dtype=torch.float16, cache_dir="/scratch/network/jmonas/.cache/")
 
 # Define a function to format the chat history with the chat template
 def format_chat(chat_history):
@@ -60,4 +60,4 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
     return chat_history_A, chat_history_B
 
 # Run the debate for a specified number of rounds
-final_chat_history_A, final_chat_history_B  = run_debate(4, chat_history_A, chat_history_B)
+final_chat_history_A, final_chat_history_B  = run_debate(2, chat_history_A, chat_history_B)
