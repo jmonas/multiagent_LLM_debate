@@ -33,13 +33,13 @@ def clean_text(response):
     return extracted_text.strip()
 
 # Randomly generate three numbers between 1-30
-numbers = random.sample(range(1, 15), 4)
+numbers = random.sample(range(1, 20), 5)
 
 # Randomly choose two different mathematical operators from the set
 operators = random.sample(['+', '-', '*'], 3)
 
 # Format the mathematical expressions as strings
-expression = f"{numbers[0]}{operators[0]}{numbers[1]}{operators[1]}{numbers[2]}{operators[2]}{numbers[3]}"
+expression = f"{numbers[0]}{operators[0]}{numbers[1]}{operators[1]}{numbers[2]}{operators[2]}{numbers[3]}{operators[3]}{numbers[4]}"
 
 print("EQUATION: ", expression)
 print("CORRECT ANSWER: ", eval(expression))
