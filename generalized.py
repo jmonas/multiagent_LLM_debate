@@ -14,7 +14,7 @@ def format_chat(chat_history):
     return inputs
 
 def generate_round_query(answer):
-    return f"Another agent has provided this answer: {answer}. Examine their reasoning and calculation method. Based on their conclusion and your analysis, can you offer a revised or alternative answer? If you find discrepancies or disagree, please explain the reasoning behind your perspective. Place a '$' before your final answer."
+    return f"Review the answer and methodology provided by another agent: {answer}. Analyze their reasoning and calculation. Offer a revised or alternative answer if necessary, explaining any discrepancies or disagreements with their conclusion. Present your final answer with a dollar sign ('$') at both the beginning and end, e.g., if the answer is '42', format it as '$42$'."
 
 def clean_text(response):
     last_model_pos = response.rfind("model")
@@ -45,11 +45,11 @@ print("EQUATION: ", expression)
 print("CORRECT ANSWER: ", eval(expression))
 # Initial chat setup 
 chat_history_A = [
-    {"role": "user", "content": f"What is the result of: {expression}? Show your steps and make sure to state your answer at the end of the response. Place a '$' before your final answer."},
+    {"role": "user", "content": f"What is the result of: {expression}? Show your steps and make sure to state your answer at the end of the response. Present your final answer with a dollar sign ('$') at both the beginning and end, e.g., if the answer is '42', format it as '$42$'."},
 ]
 
 chat_history_B = [
-    {"role": "user", "content": f"What is the result of: {expression}? Show your steps and Make sure to state your answer at the end of the response. Place a '$' before your final answer."},
+    {"role": "user", "content": f"What is the result of: {expression}? Show your steps and Make sure to state your answer at the end of the response. Present your final answer with a dollar sign ('$') at both the beginning and end, e.g., if the answer is '42', format it as '$42$'."},
 ]
 
 # Function to run the debate for a specified number of rounds
