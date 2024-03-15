@@ -18,11 +18,17 @@ def generate_round_query(answer):
 def clean_text(response):
     last_model_pos = response.rfind("model")
     extracted_text = response[last_model_pos:].split("\n", 1)[1] if last_model_pos != -1 else ""
-    unwanted_phrase = "Sure, here's the calculation:\n"
-    if extracted_text.startswith(unwanted_phrase):
-        # Remove the unwanted phrase and any additional leading newlines
-        extracted_text = extracted_text[len(unwanted_phrase):].lstrip("\n")
-    return extracted_text
+    unwanted_phrases = [
+        "Sure, here's the calculation:\n",
+        "Please note that these opinions are not guaranteed to be accurate and should be used with caution.",
+        "Sure, here's the revised answer based on the updated context:"
+    ]
+    for phrase in unwanted_phrases:
+        if phrase in extracted_text:
+            extracted_text = extracted_text.replace(phrase, "")
+    
+    # Strip leading and trailing whitespace and newlines
+    return extracted_text.strip()
 
 # Initial chat setup
 chat_history_A = [
@@ -45,7 +51,7 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         
         # Generate a response from model_A
         inputs = format_chat(chat_history_A)
-        outputs_A = model_A.generate(input_ids = inputs, max_new_tokens=150, do_sample = True, temperature = .2)
+        outputs_A = model_A.generate(input_ids = inputs, max_new_tokens=150, do_sample = True, temperature = .4)
         response_A = tokenizer.decode(outputs_A[0], skip_special_tokens=True)
         response_A_cleaned = clean_text(response_A)
 
@@ -55,7 +61,7 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         
         # Generate a response from model_B
         inputs = format_chat(chat_history_B)
-        outputs_B = model_B.generate(input_ids = inputs, max_new_tokens=150, do_sample = True, temperature = .2)
+        outputs_B = model_B.generate(input_ids = inputs, max_new_tokens=150, do_sample = True, temperature = .4)
         response_B = tokenizer.decode(outputs_B[0], skip_special_tokens=True)
         response_B_cleaned = clean_text(response_B)
 
