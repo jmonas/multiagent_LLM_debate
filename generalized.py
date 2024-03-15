@@ -43,13 +43,13 @@ expression = f"{numbers[0]}{operators[0]}{numbers[1]}{operators[1]}{numbers[2]}{
 
 print("EQUATION: ", expression)
 print("CORRECT ANSWER: ", eval(expression))
-# Initial chat setup
+# Initial chat setup 
 chat_history_A = [
-    {"role": "user", "content": f"What is the result of: {expression}? Show your steps and make sure to state your answer at the end of the response."},
+    {"role": "user", "content": f"What is the result of: {expression}? Show your steps and make sure to state your answer at the end of the response. Place a '$' before your final answer."},
 ]
 
 chat_history_B = [
-    {"role": "user", "content": f"What is the result of: {expression}? Show your steps and Make sure to state your answer at the end of the response."},
+    {"role": "user", "content": f"What is the result of: {expression}? Show your steps and Make sure to state your answer at the end of the response. Place a '$' before your final answer."},
 ]
 
 # Function to run the debate for a specified number of rounds
@@ -64,7 +64,7 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         
         # Generate a response from model_A
         inputs = format_chat(chat_history_A)
-        outputs_A = model_A.generate(input_ids = inputs, max_new_tokens=200, do_sample = True, temperature = .8)
+        outputs_A = model_A.generate(input_ids = inputs, max_new_tokens=180, do_sample = True, temperature = .8)
         response_A = tokenizer.decode(outputs_A[0], skip_special_tokens=True)
         response_A_cleaned = clean_text(response_A)
 
@@ -74,7 +74,7 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         
         # Generate a response from model_B
         inputs = format_chat(chat_history_B)
-        outputs_B = model_A.generate(input_ids = inputs, max_new_tokens=200, do_sample = True, temperature = .8)
+        outputs_B = model_A.generate(input_ids = inputs, max_new_tokens=180, do_sample = True, temperature = .8)
         response_B = tokenizer.decode(outputs_B[0], skip_special_tokens=True)
         response_B_cleaned = clean_text(response_B)
 
