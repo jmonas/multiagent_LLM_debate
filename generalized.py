@@ -33,11 +33,11 @@ def clean_text(response):
 
 # Initial chat setup
 chat_history_A = [
-    {"role": "user", "content": "What is the result of: 4+23*6+5? Make sure to state your answer at the end of the response."},
+    {"role": "user", "content": "What is the result of: 4+23*6? Make sure to state your answer at the end of the response."},
 ]
 
 chat_history_B = [
-    {"role": "user", "content": "What is the result of: 4+23*6+5? Make sure to state your answer at the end of the response."},
+    {"role": "user", "content": "What is the result of: 4+23*6? Make sure to state your answer at the end of the response."},
 ]
 
 # Function to run the debate for a specified number of rounds
@@ -62,7 +62,7 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         
         # Generate a response from model_B
         inputs = format_chat(chat_history_B)
-        outputs_B = model_B.generate(input_ids = inputs, max_new_tokens=150, do_sample = True, temperature = .6)
+        outputs_B = model_B.generate(input_ids = inputs, max_new_tokens=150, do_sample = True, temperature = .9)
         response_B = tokenizer.decode(outputs_B[0], skip_special_tokens=True)
         response_B_cleaned = clean_text(response_B)
 
