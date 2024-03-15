@@ -45,11 +45,11 @@ print("EQUATION: ", expression)
 print("CORRECT ANSWER: ", eval(expression))
 # Initial chat setup
 chat_history_A = [
-    {"role": "user", "content": f"What is the result of: {expression}? Make sure to state your answer at the end of the response."},
+    {"role": "user", "content": f"What is the result of: {expression}? Show your steps and make sure to state your answer at the end of the response."},
 ]
 
 chat_history_B = [
-    {"role": "user", "content": f"What is the result of: {expression}? Make sure to state your answer at the end of the response."},
+    {"role": "user", "content": f"What is the result of: {expression}? Show your steps and Make sure to state your answer at the end of the response."},
 ]
 
 # Function to run the debate for a specified number of rounds
