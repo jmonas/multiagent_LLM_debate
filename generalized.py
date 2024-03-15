@@ -13,7 +13,7 @@ def format_chat(chat_history):
     return inputs
 
 def generate_round_query(answer):
-    return f"These are the recent/updated opinions from other agents: {answer} Use these opinions carefully as additional advice, can you provide an updated answer?"
+    return f"These are the recent opinions from other agents: {answer}. Use these opinions carefully as additional advice, can you provide an answer?"
 
 def clean_text(response):
     last_model_pos = response.rfind("model")
