@@ -13,7 +13,7 @@ def format_chat(chat_history):
     return inputs
 
 def generate_round_query(answer):
-    return f"These are the recent opinions from other agents: {answer}. Use these opinions carefully as additional advice, can you provide an answer?"
+    return f"These are the recent opinions from other agents: {answer}. Use these opinions carefully as additional advice, can you provide a revised answer?"
 
 def clean_text(response):
     last_model_pos = response.rfind("model")
@@ -73,4 +73,4 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
     return chat_history_A, chat_history_B
 
 # Run the debate for a specified number of rounds
-final_chat_history_A, final_chat_history_B  = run_debate(2, chat_history_A, chat_history_B)
+final_chat_history_A, final_chat_history_B  = run_debate(4, chat_history_A, chat_history_B)
