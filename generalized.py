@@ -36,7 +36,7 @@ def clean_text(response):
 numbers = random.sample(range(1, 20), 5)
 
 # Randomly choose two different mathematical operators from the set
-operators = random.sample(['+', '-', '*'], 4)
+operators = random.choices(['+', '-', '*'], k=4)
 
 # Format the mathematical expressions as strings
 expression = f"{numbers[0]}{operators[0]}{numbers[1]}{operators[1]}{numbers[2]}{operators[2]}{numbers[3]}{operators[3]}{numbers[4]}"
