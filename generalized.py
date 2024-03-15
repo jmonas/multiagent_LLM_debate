@@ -16,7 +16,7 @@ def generate_round_query(answer):
     return f"These are the recent/updated opinions from other agents: {answer} Use these opinions carefully as additional advice, can you provide an updated answer?"
 
 def clean_text(response):
-    last_model_pos = response.rfind("<start_of_turn>model")
+    last_model_pos = response.rfind("model")
     extracted_text = response[last_model_pos:].split("\n", 1)[1] if last_model_pos != -1 else ""
     unwanted_phrase = "Sure, here's the calculation:\n"
     if extracted_text.startswith(unwanted_phrase):
