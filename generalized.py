@@ -14,7 +14,7 @@ def format_chat(chat_history):
     return inputs
 
 def generate_round_query(answer):
-    return f"These are the recent opinions from other agents: {answer}. They may or may not be correct. Use these opinions carefully as additional advice, can you provide a revised answer?"
+    return f"This is the answer from another agent: {answer}. They may or may not be correct. Using their answer as additional advice, can you provide a revised answer? If you disagree, why are they wrong?"
 
 def clean_text(response):
     last_model_pos = response.rfind("model")
@@ -64,7 +64,7 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         
         # Generate a response from model_A
         inputs = format_chat(chat_history_A)
-        outputs_A = model_A.generate(input_ids = inputs, max_new_tokens=150, do_sample = True, temperature = .6)
+        outputs_A = model_A.generate(input_ids = inputs, max_new_tokens=300, do_sample = True, temperature = .6)
         response_A = tokenizer.decode(outputs_A[0], skip_special_tokens=True)
         response_A_cleaned = clean_text(response_A)
 
@@ -74,7 +74,7 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         
         # Generate a response from model_B
         inputs = format_chat(chat_history_B)
-        outputs_B = model_A.generate(input_ids = inputs, max_new_tokens=150, do_sample = True, temperature = .6)
+        outputs_B = model_A.generate(input_ids = inputs, max_new_tokens=300, do_sample = True, temperature = .6)
         response_B = tokenizer.decode(outputs_B[0], skip_special_tokens=True)
         response_B_cleaned = clean_text(response_B)
 
