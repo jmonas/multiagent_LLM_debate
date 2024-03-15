@@ -21,7 +21,8 @@ def clean_text(response):
     unwanted_phrases = [
         "Sure, here's the calculation:\n",
         "Please note that these opinions are not guaranteed to be accurate and should be used with caution.",
-        "Sure, here's the revised answer based on the updated context:"
+        "Sure, here's the revised answer based on the updated context:",
+        "Use these opinions carefully as additional advice, but be aware that the opinions may change in the future."
     ]
     for phrase in unwanted_phrases:
         if phrase in extracted_text:
