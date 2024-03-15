@@ -33,13 +33,13 @@ def clean_text(response):
     return extracted_text.strip()
 
 # Randomly generate three numbers between 1-30
-numbers = random.sample(range(1, 31), 3)
+numbers = random.sample(range(1, 31), 4)
 
 # Randomly choose two different mathematical operators from the set
-operators = random.sample(['+', '-', '*'], 2)
+operators = random.sample(['+', '-', '*'], 3)
 
 # Format the mathematical expressions as strings
-expression = f"{numbers[0]}{operators[0]}{numbers[1]}{operators[1]}{numbers[2]}"
+expression = f"{numbers[0]}{operators[0]}{numbers[1]}{operators[1]}{numbers[2]}{operators[2]}{numbers[3]}"
 
 print("EQUATION: ", expression)
 print("CORRECT ANSWER: ", eval(expression))
@@ -92,4 +92,4 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
     return chat_history_A, chat_history_B
 
 # Run the debate for a specified number of rounds
-final_chat_history_A, final_chat_history_B  = run_debate(4, chat_history_A, chat_history_B)
+final_chat_history_A, final_chat_history_B  = run_debate(3, chat_history_A, chat_history_B)
