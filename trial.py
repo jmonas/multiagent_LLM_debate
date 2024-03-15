@@ -21,3 +21,5 @@ decoded_output_A_1 = tokenizer.decode(output_A_1[0])
 
 input_ids = tokenizer("What was my last question?", return_tensors="pt").to("cuda")
 output_A_2 = model_A.generate(**input_ids, max_new_tokens=150, do_sample = True, temperature = .2)
+
+print(tokenizer.decode(output_A_2[0]))
