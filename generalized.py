@@ -15,6 +15,15 @@ def format_chat(chat_history):
 def generate_round_query(answer):
     return f"These are the recent/updated opinions from other agents: {answer} Use these opinions carefully as additional advice, can you provide an updated answer?"
 
+def clean_text(response):
+    last_model_pos = response.rfind("<start_of_turn>model")
+    extracted_text = response[last_model_pos:].split("\n", 1)[1] if last_model_pos != -1 else ""
+    unwanted_phrase = "Sure, here's the calculation:\n"
+    if extracted_text.startswith(unwanted_phrase):
+        # Remove the unwanted phrase and any additional leading newlines
+        extracted_text = extracted_text[len(unwanted_phrase):].lstrip("\n")
+    return extracted_text
+
 # Initial chat setup
 chat_history_A = [
     {"role": "user", "content": "Calculate exact numerical result for the following expression: 86+81+9*14-3"},
@@ -37,24 +46,28 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         # Generate a response from model_A
         inputs = format_chat(chat_history_A)
         outputs_A = model_A.generate(input_ids = inputs, max_new_tokens=150, do_sample = True, temperature = .2)
-        response_A = tokenizer.decode(outputs_A[0])
+        response_A = tokenizer.decode(outputs_A[0], skip_special_tokens=True)
+        response_A_cleaned = clean_text(response_A)
+
         print("Agent A Results:")
-        print(response_A)
-        chat_history_A.append({"role": "model", "content": response_A})
+        print(response_A_cleaned)
+        chat_history_A.append({"role": "model", "content": response_A_cleaned})
         
         # Generate a response from model_B
         inputs = format_chat(chat_history_B)
         outputs_B = model_B.generate(input_ids = inputs, max_new_tokens=150, do_sample = True, temperature = .2)
         response_B = tokenizer.decode(outputs_B[0], skip_special_tokens=True)
+        response_B_cleaned = clean_text(response_B)
+
         print("Agent B Results:")
-        print(response_B)
-        chat_history_B.append({"role": "model", "content": response_B})
+        print(response_B_cleaned)
+        chat_history_B.append({"role": "model", "content": response_B_cleaned})
         
         print("\n")
 
 
-        chat_history_A.append({"role": "user", "content": generate_round_query(response_B)})
-        chat_history_B.append({"role": "user", "content": generate_round_query(response_A)})
+        chat_history_A.append({"role": "user", "content": generate_round_query(response_B_cleaned)})
+        chat_history_B.append({"role": "user", "content": generate_round_query(response_A_cleaned)})
         
     
     return chat_history_A, chat_history_B
