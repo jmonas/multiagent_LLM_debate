@@ -5,7 +5,7 @@ import random
 # Initialize the models and tokenizer
 tokenizer = AutoTokenizer.from_pretrained("gg-hf/gemma-7b-it", cache_dir="/scratch/network/jmonas/.cache/")
 model_A = AutoModelForCausalLM.from_pretrained("gg-hf/gemma-7b-it", device_map="auto", torch_dtype=torch.float16, cache_dir="/scratch/network/jmonas/.cache/")
-model_B = AutoModelForCausalLM.from_pretrained("gg-hf/gemma-7b-it", device_map="auto", torch_dtype=torch.float16, cache_dir="/scratch/network/jmonas/.cache/")
+# model_B = AutoModelForCausalLM.from_pretrained("gg-hf/gemma-7b-it", device_map="auto", torch_dtype=torch.float16, cache_dir="/scratch/network/jmonas/.cache/")
 
 # Define a function to format the chat history with the chat template
 def format_chat(chat_history):
@@ -33,7 +33,7 @@ def clean_text(response):
     return extracted_text.strip()
 
 # Randomly generate three numbers between 1-30
-numbers = random.sample(range(1, 31), 4)
+numbers = random.sample(range(1, 15), 4)
 
 # Randomly choose two different mathematical operators from the set
 operators = random.sample(['+', '-', '*'], 3)
@@ -74,7 +74,7 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         
         # Generate a response from model_B
         inputs = format_chat(chat_history_B)
-        outputs_B = model_B.generate(input_ids = inputs, max_new_tokens=150, do_sample = True, temperature = .6)
+        outputs_B = model_A.generate(input_ids = inputs, max_new_tokens=150, do_sample = True, temperature = .6)
         response_B = tokenizer.decode(outputs_B[0], skip_special_tokens=True)
         response_B_cleaned = clean_text(response_B)
 
