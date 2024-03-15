@@ -33,11 +33,11 @@ def clean_text(response):
 
 # Initial chat setup
 chat_history_A = [
-    {"role": "user", "content": "What is the result of: 4+23*6+24-24*12? Make sure to state your answer at the end of the response."},
+    {"role": "user", "content": "What is the result of: 4+23*6? Make sure to state your answer at the end of the response."},
 ]
 
 chat_history_B = [
-    {"role": "user", "content": "What is the result of: 4+23*6+24-24*12? Make sure to state your answer at the end of the response."},
+    {"role": "user", "content": "What is the result of: 4+23*6? Make sure to state your answer at the end of the response."},
 ]
 
 # Function to run the debate for a specified number of rounds
