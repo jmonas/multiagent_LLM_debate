@@ -42,30 +42,27 @@ def clean_text(response):
 #     numbers = [int(number) for number in numbers]
 #     return numbers, extracted_text
 
-def parse_final_answers_refined(text):
-    # Pattern to match arithmetic expressions and final answers, 
-    # including cases where the answer is reiterated or explained further.
+def parse_final_answer_correctly(text):
+    # Updated pattern to specifically target final answers, ignoring intermediate steps and calculations
     patterns = [
-        r"Final Answer:\s*\$?([-+]?\d+(?:\s*[\+\-\*\/]\s*[-+]?\d+)*\s*=)?\s*([-+]?\d+)",
-        r"Revised Answer:\s*\$?([-+]?\d+(?:\s*[\+\-\*\/]\s*[-+]?\d+)*\s*=)?\s*([-+]?\d+)",
-        r"Therefore, the (?:final|revised) answer is\s*\$?([-+]?\d+(?:\s*[\+\-\*\/]\s*[-+]?\d+)*\s*=)?\s*([-+]?\d+)",
-        r"\$?([-+]?\d+(?:\s*[\+\-\*\/]\s*[-+]?\d+)*\s*=)?\s*([-+]?\d+)"
+        r"Final Answer:\s*\$\s*([-+]?\d+)",
+        r"Revised Answer:\s*\$\s*([-+]?\d+)",
+        r"Therefore, the (?:final|revised) answer is\s*\$\s*([-+]?\d+)",
+        # This pattern is designed to ignore detailed calculations and only capture the actual final answer
+        r"\$\s*([-+]?\d+)\s*$"
     ]
     
-    matches_found = []
+    # Initialize a list to collect final answers
+    final_answers = []
 
+    # Iterate through each pattern and search within the text
     for pattern in patterns:
-        # Find all matches and capture both arithmetic expressions and final numeric answers
         matches = re.findall(pattern, text, re.MULTILINE | re.IGNORECASE)
-        for match in matches:
-            # Choosing the relevant numeric part, preferring the last piece as the final answer
-            final_piece = match[-1]  # Last captured group presumed to be the most relevant
-            if final_piece:
-                matches_found.append(final_piece)
+        final_answers.extend(matches)
 
-    if matches_found:
-        # Returning unique matches to avoid duplication if the answer is reiterated
-        return list(set(matches_found))
+    if final_answers:
+        # Remove duplicates by converting to a set, then back to a list
+        return list(set(final_answers))
     else:
         return ["No answer found"]
 
