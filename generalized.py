@@ -55,6 +55,8 @@ def clean_text(response):
 def parse_final_answer_correctly(text):
     text = text.replace(expression,"")
     text = text.replace(expression_w_spaces,"")
+    text = text.replace(",","")
+
 
     pattern = r"""
         \$\s*'?\s*                # Matches the dollar sign, optional spaces, and optional single quote
