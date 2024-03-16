@@ -56,17 +56,25 @@ def parse_final_answer_correctly(text):
     text = text.replace(expression,"")
     text = text.replace(expression_w_spaces,"")
     text = text.replace(",","")
+    pattern = r"-?\d+"
+    
+    # Find all matches of the pattern in the text
+    numbers = re.findall(pattern, text)
+    
+    # Convert found strings to integers
+    numbers = [int(number) for number in numbers]
+    
+    return numbers
 
-
-    pattern = r"""
-        \$\s*'?\s*                # Matches the dollar sign, optional spaces, and optional single quote
-        (?:                       # Non-capturing group for the whole expression
-            (?:                   # Non-capturing group for arithmetic operations
-                -?\d+\s*[\+\-\*\/]\s*   # Matches numbers and arithmetic operators
-            )*                    # Zero or more repetitions of the arithmetic operations
-            (-?\d+)               # Captures the numeric value (including negative numbers)
-        )\s*'?\s*(?:=|(?!\+|\-|\*|\/)\D|$)   # Looks for an equals sign or non-arithmetic characters following the number
-    """
+    # pattern = r"""
+    #     \$\s*'?\s*                # Matches the dollar sign, optional spaces, and optional single quote
+    #     (?:                       # Non-capturing group for the whole expression
+    #         (?:                   # Non-capturing group for arithmetic operations
+    #             -?\d+\s*[\+\-\*\/]\s*   # Matches numbers and arithmetic operators
+    #         )*                    # Zero or more repetitions of the arithmetic operations
+    #         (-?\d+)               # Captures the numeric value (including negative numbers)
+    #     )\s*'?\s*(?:=|(?!\+|\-|\*|\/)\D|$)   # Looks for an equals sign or non-arithmetic characters following the number
+    # """
     # Compile the pattern with VERBOSE flag to allow whitespace and comments
     regex = re.compile(pattern, re.VERBOSE | re.MULTILINE | re.DOTALL)
 
