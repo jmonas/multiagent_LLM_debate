@@ -94,13 +94,13 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         print("\n")
         print("\n")
 
-        extract_query_A = f"Extract the answer. Only output the answer. Do not print any other words at all except the answer: {response_A_cleaned}"
-        extract_query_B = f"Extract the answer. Only output the answer. Do not print any other words at all except the answer: {response_B_cleaned}"
+        extract_query_A = f"Extract the answer. Only output the answer. Do not print anything else other than the answer: {response_A_cleaned}"
+        extract_query_B = f"Extract the answer. Only output the answer. Do not print anything else other than the answer: {response_B_cleaned}"
         extract_query_A_ids = tokenizer(extract_query_A, return_tensors="pt").to("cuda")
         extract_query_B_ids = tokenizer(extract_query_B, return_tensors="pt").to("cuda")
 
-        extract_text_A_outputs = model_A.generate(**extract_query_A_ids, max_new_tokens=10)
-        extract_text_B_outputs = model_A.generate(**extract_query_B_ids, max_new_tokens=10)
+        extract_text_A_outputs = model_A.generate(**extract_query_A_ids, max_new_tokens=15)
+        extract_text_B_outputs = model_A.generate(**extract_query_B_ids, max_new_tokens=15)
         
         cleaned_answer_A = clean_extraction_text(extract_query_A, tokenizer.decode(extract_text_A_outputs[0], skip_special_tokens=True))
         cleaned_answer_B = clean_extraction_text(extract_query_B, tokenizer.decode(extract_text_B_outputs[0], skip_special_tokens=True))
