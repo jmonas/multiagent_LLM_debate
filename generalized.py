@@ -77,13 +77,30 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         outputs_B = model_A.generate(input_ids = inputs, max_new_tokens=180, do_sample = True, temperature = .8)
         response_B = tokenizer.decode(outputs_B[0], skip_special_tokens=True)
         response_B_cleaned = clean_text(response_B)
-
         print("Agent B Results:")
         print(response_B_cleaned)
         chat_history_B.append({"role": "model", "content": response_B_cleaned})
-        
+
+        print("\n")
         print("\n")
 
+        extract_text_A = f"Extract the answer. Only output the answer. Do not print anything else other than the answer: {response_A_cleaned}"
+        extract_text_B = f"Extract the answer. Only output the answer. Do not print anything else other than the answer: {response_B_cleaned}"
+        extract_text_A_ids = tokenizer(extract_text_A, return_tensors="pt").to("cuda")
+        extract_text_B_ids = tokenizer(extract_text_B, return_tensors="pt").to("cuda")
+
+        extract_text_A_outputs = model_A.generate(**extract_text_A_ids, max_new_tokens=3)
+        extract_text_B_outputs = model_A.generate(**extract_text_B_ids, max_new_tokens=3)
+        print("EXTRACTED ANSWERS")
+        print("ANSWER A", tokenizer.decode(extract_text_A_outputs[0]))
+        print("ANSWER B", tokenizer.decode(extract_text_B_outputs[0]))
+
+        print(tokenizer.decode(extract_text_B_outputs[0]))
+        print("\n")
+        print("\n")
+        print("\n")
+        print("\n")
+        print("\n")
 
         chat_history_A.append({"role": "user", "content": generate_round_query(response_B_cleaned)})
         chat_history_B.append({"role": "user", "content": generate_round_query(response_A_cleaned)})
