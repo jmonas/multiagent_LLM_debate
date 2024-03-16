@@ -7,6 +7,16 @@ tokenizer = AutoTokenizer.from_pretrained("gg-hf/gemma-7b-it", cache_dir="/scrat
 model_A = AutoModelForCausalLM.from_pretrained("gg-hf/gemma-7b-it", device_map="auto", torch_dtype=torch.float16, cache_dir="/scratch/network/jmonas/.cache/")
 # model_B = AutoModelForCausalLM.from_pretrained("gg-hf/gemma-7b-it", device_map="auto", torch_dtype=torch.float16, cache_dir="/scratch/network/jmonas/.cache/")
 
+# Randomly generate three numbers between 1-30
+numbers = random.sample(range(1, 20), 5)
+
+# Randomly choose two different mathematical operators from the set
+operators = random.choices(['+', '-', '*'], k=4)
+
+# Format the mathematical expressions as strings
+expression = f"{numbers[0]}{operators[0]}{numbers[1]}{operators[1]}{numbers[2]}{operators[2]}{numbers[3]}{operators[3]}{numbers[4]}"
+expression_w_spaces = f"{numbers[0]} {operators[0]} {numbers[1]} {operators[1]} {numbers[2]} {operators[2]} {numbers[3]} {operators[3]} {numbers[4]} ="
+
 
 # Define a function to format the chat history with the chat template
 def format_chat(chat_history):
@@ -43,38 +53,34 @@ def clean_text(response):
 #     return numbers, extracted_text
 
 def parse_final_answer_correctly(text):
-    patterns = [
-        # This pattern now includes optional spaces and accounts for negative numbers more effectively
-        # It also strips spaces around the number to ensure clean extraction
-        r"Final Answer:\s*\$?\s*'?\s*([-+]?\d+)\s*'?\s*$",
-        r"Revised Answer:\s*\$?\s*'?\s*([-+]?\d+)\s*'?\s*$",
-        r"Therefore, the (?:final|revised) answer is\s*\$?\s*'?\s*([-+]?\d+)\s*'?\s*$",
-        # Direct match for a number potentially wrapped in quotes and preceded by a '$' with optional spaces
-        r"\$?\s*'?\s*([-+]?\d+)\s*'?\s*$"
-    ]
-    
-    # List to collect final answers found by the patterns
-    final_answers = []
+    text = text.replace(expression,"")
+    text = text.replace(expression_w_spaces,"")
 
-    # Search for matches using each pattern
-    for pattern in patterns:
-        matches = re.findall(pattern, text, re.MULTILINE | re.IGNORECASE)
-        final_answers.extend(matches)
+    pattern = r"""
+        \$\s*'?\s*                # Matches the dollar sign, optional spaces, and optional single quote
+        (?:                       # Non-capturing group for the whole expression
+            (?:                   # Non-capturing group for arithmetic operations
+                -?\d+\s*[\+\-\*\/]\s*   # Matches numbers and arithmetic operators
+            )*                    # Zero or more repetitions of the arithmetic operations
+            (-?\d+)               # Captures the numeric value (including negative numbers)
+        )\s*'?\s*(?:=|(?!\+|\-|\*|\/)\D|$)   # Looks for an equals sign or non-arithmetic characters following the number
+    """
+    # Compile the pattern with VERBOSE flag to allow whitespace and comments
+    regex = re.compile(pattern, re.VERBOSE | re.MULTILINE | re.DOTALL)
 
-    if final_answers:
-        # Convert to set and back to list to remove duplicates
-        return list(set(final_answers))
+    # Search for matches using the compiled regex pattern
+    matches = regex.findall(text)
+
+    # Extract the numeric values from the matches
+    answers = [match for match in matches if match]
+
+    if answers:
+        # Return the last matched answer, assuming it's the final one in the text
+        return answers[-1]
     else:
-        return ["No answer found"]
+        return "No answer found"
 
-# Randomly generate three numbers between 1-30
-numbers = random.sample(range(1, 20), 5)
 
-# Randomly choose two different mathematical operators from the set
-operators = random.choices(['+', '-', '*'], k=4)
-
-# Format the mathematical expressions as strings
-expression = f"{numbers[0]}{operators[0]}{numbers[1]}{operators[1]}{numbers[2]}{operators[2]}{numbers[3]}{operators[3]}{numbers[4]}"
 
 print("EQUATION: ", expression)
 print("CORRECT ANSWER: ", eval(expression))
