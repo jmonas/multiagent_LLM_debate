@@ -94,8 +94,8 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         print("\n")
         print("\n")
 
-        extract_query_A = f" {response_A_cleaned}. Extract the final answer from the text. Only output the numerical answer. Do not print anything else other than the numerical answer:"
-        extract_query_B = f" {response_B_cleaned}. Extract the final answer from the text. Only output the numerical answer. Do not print anything else other than the numerical answer."
+        extract_query_A = f" {response_A_cleaned}. Extract the final answer from the text. Only output the numerical answer."
+        extract_query_B = f" {response_B_cleaned}. Extract the final answer from the text. Only output the numerical answer."
         extract_query_A_ids = tokenizer(extract_query_A, return_tensors="pt").to("cuda")
         extract_query_B_ids = tokenizer(extract_query_B, return_tensors="pt").to("cuda")
 
