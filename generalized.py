@@ -33,14 +33,41 @@ def clean_text(response):
     # Strip leading and trailing whitespace and newlines
     return extracted_text.strip()
 
-def clean_extraction_text(query, response):
-    extracted_text = response.replace(query, "")
-    pattern = r"-?\d+"
-    # Find all matches of the pattern
-    numbers = re.findall(pattern, extracted_text)
-    # Convert found strings to integers
-    numbers = [int(number) for number in numbers]
-    return numbers, extracted_text
+# def clean_extraction_text(query, response):
+#     extracted_text = response.replace(query, "")
+#     pattern = r"-?\d+"
+#     # Find all matches of the pattern
+#     numbers = re.findall(pattern, extracted_text)
+#     # Convert found strings to integers
+#     numbers = [int(number) for number in numbers]
+#     return numbers, extracted_text
+
+def parse_final_answers_refined(text):
+    # Pattern to match arithmetic expressions and final answers, 
+    # including cases where the answer is reiterated or explained further.
+    patterns = [
+        r"Final Answer:\s*\$?([-+]?\d+(?:\s*[\+\-\*\/]\s*[-+]?\d+)*\s*=)?\s*([-+]?\d+)",
+        r"Revised Answer:\s*\$?([-+]?\d+(?:\s*[\+\-\*\/]\s*[-+]?\d+)*\s*=)?\s*([-+]?\d+)",
+        r"Therefore, the (?:final|revised) answer is\s*\$?([-+]?\d+(?:\s*[\+\-\*\/]\s*[-+]?\d+)*\s*=)?\s*([-+]?\d+)",
+        r"\$?([-+]?\d+(?:\s*[\+\-\*\/]\s*[-+]?\d+)*\s*=)?\s*([-+]?\d+)"
+    ]
+    
+    matches_found = []
+
+    for pattern in patterns:
+        # Find all matches and capture both arithmetic expressions and final numeric answers
+        matches = re.findall(pattern, text, re.MULTILINE | re.IGNORECASE)
+        for match in matches:
+            # Choosing the relevant numeric part, preferring the last piece as the final answer
+            final_piece = match[-1]  # Last captured group presumed to be the most relevant
+            if final_piece:
+                matches_found.append(final_piece)
+
+    if matches_found:
+        # Returning unique matches to avoid duplication if the answer is reiterated
+        return list(set(matches_found))
+    else:
+        return ["No answer found"]
 
 # Randomly generate three numbers between 1-30
 numbers = random.sample(range(1, 20), 5)
@@ -94,26 +121,26 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         print("\n")
         print("\n")
 
-        extract_query_A = f" {response_A_cleaned}. Extract the final answer from the text. Only output the numerical answer."
-        extract_query_B = f" {response_B_cleaned}. Extract the final answer from the text. Only output the numerical answer."
-        extract_query_A_ids = tokenizer(extract_query_A, return_tensors="pt").to("cuda")
-        extract_query_B_ids = tokenizer(extract_query_B, return_tensors="pt").to("cuda")
+        # extract_query_A = f" {response_A_cleaned}. Extract the final answer from the text. Only output the numerical answer."
+        # extract_query_B = f" {response_B_cleaned}. Extract the final answer from the text. Only output the numerical answer."
+        # extract_query_A_ids = tokenizer(extract_query_A, return_tensors="pt").to("cuda")
+        # extract_query_B_ids = tokenizer(extract_query_B, return_tensors="pt").to("cuda")
 
-        extract_text_A_outputs = model_A.generate(**extract_query_A_ids, max_new_tokens=15)
-        extract_text_B_outputs = model_A.generate(**extract_query_B_ids, max_new_tokens=15)
+        # extract_text_A_outputs = model_A.generate(**extract_query_A_ids, max_new_tokens=15)
+        # extract_text_B_outputs = model_A.generate(**extract_query_B_ids, max_new_tokens=15)
         
-        cleaned_answer_A = clean_extraction_text(extract_query_A, tokenizer.decode(extract_text_A_outputs[0], skip_special_tokens=True))
-        cleaned_answer_B = clean_extraction_text(extract_query_B, tokenizer.decode(extract_text_B_outputs[0], skip_special_tokens=True))
+        cleaned_answer_A = parse_final_answers_refined(response_A_cleaned)
+        cleaned_answer_B = parse_final_answers_refined(response_B_cleaned)
 
         print("EXTRACTED ANSWERS")
         print("ANSWER A", cleaned_answer_A)
         print("ANSWER B", cleaned_answer_B)
-        print("\n")
-        print("\n")
-        print("WORK A")
-        print(tokenizer.decode(extract_text_A_outputs[0], skip_special_tokens=True))
-        print("WORK B")
-        print(tokenizer.decode(extract_text_B_outputs[0], skip_special_tokens=True))
+        # print("\n")
+        # print("\n")
+        # print("WORK A")
+        # print(tokenizer.decode(extract_text_A_outputs[0], skip_special_tokens=True))
+        # print("WORK B")
+        # print(tokenizer.decode(extract_text_B_outputs[0], skip_special_tokens=True))
         print("\n")
         print("\n")
         print("\n")
