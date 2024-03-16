@@ -89,8 +89,8 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         extract_text_A_ids = tokenizer(extract_text_A, return_tensors="pt").to("cuda")
         extract_text_B_ids = tokenizer(extract_text_B, return_tensors="pt").to("cuda")
 
-        extract_text_A_outputs = model_A.generate(**extract_text_A_ids, max_new_tokens=3)
-        extract_text_B_outputs = model_A.generate(**extract_text_B_ids, max_new_tokens=3)
+        extract_text_A_outputs = model_A.generate(**extract_text_A_ids, max_new_tokens=10)
+        extract_text_B_outputs = model_A.generate(**extract_text_B_ids, max_new_tokens=10)
         print("EXTRACTED ANSWERS")
         print("ANSWER A", tokenizer.decode(extract_text_A_outputs[0]))
         print("ANSWER B", tokenizer.decode(extract_text_B_outputs[0]))
