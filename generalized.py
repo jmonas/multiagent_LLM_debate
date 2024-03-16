@@ -40,7 +40,7 @@ def clean_extraction_text(query, response):
     numbers = re.findall(pattern, extracted_text)
     # Convert found strings to integers
     numbers = [int(number) for number in numbers]
-    return numbers[0]
+    return numbers
 
 # Randomly generate three numbers between 1-30
 numbers = random.sample(range(1, 20), 5)
