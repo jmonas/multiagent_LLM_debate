@@ -43,25 +43,26 @@ def clean_text(response):
 #     return numbers, extracted_text
 
 def parse_final_answer_correctly(text):
-    # Updated pattern to specifically target final answers, ignoring intermediate steps and calculations
     patterns = [
-        r"Final Answer:\s*\$\s*([-+]?\d+)",
-        r"Revised Answer:\s*\$\s*([-+]?\d+)",
-        r"Therefore, the (?:final|revised) answer is\s*\$\s*([-+]?\d+)",
-        # This pattern is designed to ignore detailed calculations and only capture the actual final answer
-        r"\$\s*([-+]?\d+)\s*$"
+        # This pattern now includes optional spaces and accounts for negative numbers more effectively
+        # It also strips spaces around the number to ensure clean extraction
+        r"Final Answer:\s*\$?\s*'?\s*([-+]?\d+)\s*'?\s*$",
+        r"Revised Answer:\s*\$?\s*'?\s*([-+]?\d+)\s*'?\s*$",
+        r"Therefore, the (?:final|revised) answer is\s*\$?\s*'?\s*([-+]?\d+)\s*'?\s*$",
+        # Direct match for a number potentially wrapped in quotes and preceded by a '$' with optional spaces
+        r"\$?\s*'?\s*([-+]?\d+)\s*'?\s*$"
     ]
     
-    # Initialize a list to collect final answers
+    # List to collect final answers found by the patterns
     final_answers = []
 
-    # Iterate through each pattern and search within the text
+    # Search for matches using each pattern
     for pattern in patterns:
         matches = re.findall(pattern, text, re.MULTILINE | re.IGNORECASE)
         final_answers.extend(matches)
 
     if final_answers:
-        # Remove duplicates by converting to a set, then back to a list
+        # Convert to set and back to list to remove duplicates
         return list(set(final_answers))
     else:
         return ["No answer found"]
