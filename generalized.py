@@ -105,17 +105,21 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         cleaned_answer_A = clean_extraction_text(extract_query_A, tokenizer.decode(extract_text_A_outputs[0], skip_special_tokens=True))
         cleaned_answer_B = clean_extraction_text(extract_query_B, tokenizer.decode(extract_text_B_outputs[0], skip_special_tokens=True))
 
-
         print("EXTRACTED ANSWERS")
         print("ANSWER A", cleaned_answer_A)
         print("ANSWER B", cleaned_answer_B)
-
+        print("\n")
+        print("\n")
+        print("WORK")
+        print(tokenizer.decode(extract_text_A_outputs[0], skip_special_tokens=True))
+        print(tokenizer.decode(extract_text_B_outputs[0], skip_special_tokens=True))
         print("\n")
         print("\n")
         print("\n")
         print("\n")
         print("\n")
-
+        print("\n")
+        print("\n")
         chat_history_A.append({"role": "user", "content": generate_round_query(response_B_cleaned)})
         chat_history_B.append({"role": "user", "content": generate_round_query(response_A_cleaned)})
         
