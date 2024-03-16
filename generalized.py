@@ -126,8 +126,8 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         # extract_text_A_outputs = model_A.generate(**extract_query_A_ids, max_new_tokens=15)
         # extract_text_B_outputs = model_A.generate(**extract_query_B_ids, max_new_tokens=15)
         
-        cleaned_answer_A = parse_final_answers_refined(response_A_cleaned)
-        cleaned_answer_B = parse_final_answers_refined(response_B_cleaned)
+        cleaned_answer_A = parse_final_answer_correctly(response_A_cleaned)
+        cleaned_answer_B = parse_final_answer_correctly(response_B_cleaned)
 
         print("EXTRACTED ANSWERS")
         print("ANSWER A", cleaned_answer_A)
