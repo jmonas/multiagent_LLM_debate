@@ -97,14 +97,10 @@ def parse_final_answer_correctly(text):
     text = text.replace(expression_w_spaces,"")
     text = text.replace(",","")
     pattern = r"""
-        \$\s*'?\s*                # Matches the dollar sign, optional spaces, and optional single quote
-        (?:                       # Non-capturing group for the whole expression
-            (?:                   # Non-capturing group for arithmetic operations
-                -?\d+\s*[\+\-\*\/]\s*   # Matches numbers and arithmetic operators
-            )*                    # Zero or more repetitions of the arithmetic operations
-            (-?\d+)               # Captures the numeric value (including negative numbers)
-        )\s*'?\s*(?:=|(?!\+|\-|\*|\/)\D|$)   # Looks for an equals sign or non-arithmetic characters following the number
+        !!!\s*'?\s*                 # Matches the '!!!', optional spaces, and optional single quote
+        (-?\d+)                     # Captures the numeric value, including negative numbers
     """
+
     # Compile the pattern with VERBOSE flag to allow whitespace and comments
     regex = re.compile(pattern, re.VERBOSE | re.MULTILINE | re.DOTALL)
     # Search for matches using the compiled regex pattern
