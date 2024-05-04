@@ -25,7 +25,7 @@ def format_chat(chat_history):
     return inputs
 
 def generate_round_query(answer):
-    return f"Another agent has provided this answer: {answer}. Examine their reasoning and calculation method. Based on their conclusion and your analysis, can you offer a revised or alternative answer? If you find discrepancies or disagree, please explain the reasoning behind your perspective. Place a '$' before your final answer."
+    return f"Another agent has provided this answer: {answer}. Examine their reasoning and calculation method. Based on their conclusion and your analysis, can you offer a revised or alternative answer? If you find discrepancies or disagree, please explain the reasoning behind your perspective. Put '!!!' before your final answer."
 
 def clean_text(response):
     last_model_pos = response.rfind("model")
@@ -124,11 +124,11 @@ print("EQUATION: ", expression)
 print("CORRECT ANSWER: ", eval(expression))
 # Initial chat setup 
 chat_history_A = [
-    {"role": "user", "content": f"What is the result of: {expression}? Show your steps and make sure to state your answer at the end of the response. Place a '$' before your final answer."},
+    {"role": "user", "content": f"What is the result of: {expression}? Show your steps and make sure to state your answer at the end of the response. Put '!!!' before your final answer."},
 ]
 
 chat_history_B = [
-    {"role": "user", "content": f"What is the result of: {expression}? Show your steps and Make sure to state your answer at the end of the response. Place a '$' before your final answer."},
+    {"role": "user", "content": f"What is the result of: {expression}? Show your steps and Make sure to state your answer at the end of the response. Put '!!!' before your final answer."},
 ]
 
 # Function to run the debate for a specified number of rounds
