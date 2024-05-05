@@ -200,4 +200,5 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
     return chat_history_A, chat_history_B
 
 # Run the debate for a specified number of rounds
-final_chat_history_A, final_chat_history_B  = run_debate(3, chat_history_A, chat_history_B)
+for _ in range(6):  
+    final_chat_history_A, final_chat_history_B  = run_debate(3, chat_history_A, chat_history_B)
