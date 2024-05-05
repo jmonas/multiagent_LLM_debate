@@ -64,7 +64,7 @@ def parse_final_answer_correctly(text, expression, expression_w_spaces):
 
 def run_debate(number_of_rounds, number_of_agents):
     numbers = random.sample(range(1, 10), 4)
-    operators = random.choices(['+','-'], k=3)
+    operators = random.choices(['+','-', '*'], k=3)
     expression = f"{numbers[0]}{operators[0]}{numbers[1]}{operators[1]}{numbers[2]}{operators[2]}{numbers[3]}"
     expression_w_spaces = f"{numbers[0]} {operators[0]} {numbers[1]} {operators[1]} {numbers[2]} {operators[2]} {numbers[3]} ="
     print("\n")
@@ -116,6 +116,7 @@ def run_debate(number_of_rounds, number_of_agents):
         print("\n")
         # print("\n")
         # print("\n")
+    print("CORRECT ANSWER: ", eval(expression))
     print(final_answers)
     return eval(expression), final_answers
 
@@ -132,7 +133,7 @@ for _ in range(num_debates):
         if ans.isdigit() or (ans.startswith('-') and ans[1:].isdigit()):
             if int(ans) == truth:
                 agents_correct[i] +=1
-    if not all(x == answers[0][0] for x in answers[0]) and all(x == answers[-1][0] for x in answers[0]):
+    if not all(x == answers[0][0] for x in answers[0]) and all(x == answers[-1][0] for x in answers[-1]):
         print("SUCCESS, WRONG CHANGED RIGHT")
         print("SUCCESS, WRONG CHANGED RIGHT")
         print("SUCCESS, WRONG CHANGED RIGHT")
