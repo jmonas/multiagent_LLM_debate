@@ -78,10 +78,10 @@ def run_debate(number_of_rounds, number_of_agents):
     chat_histories = [[{"role": "user", "content": f"What is the result of: {expression}? Show your steps and make sure to state your answer at the end of the response. Put '!!!' before your final numerical answer."}] for _ in range(number_of_agents)]
     final_answers = []
     for round_num in range(number_of_rounds):
-        print(f"ROUND {round_num + 1} RESULTS")
-        print("---------------------------")
-        print("---------------------------")
-        print("---------------------------")
+        # print(f"ROUND {round_num + 1} RESULTS")
+        # print("---------------------------")
+        # print("---------------------------")
+        # print("---------------------------")
 
         all_responses = []
         all_answers = []
@@ -96,7 +96,7 @@ def run_debate(number_of_rounds, number_of_agents):
             # print("\n")
             # print("\n")
             # print(f"Agent {i+1} Results:")
-            print(response_cleaned)
+            # print(response_cleaned)
             final_answer = parse_final_answer_correctly(response_cleaned, expression, expression_w_spaces)
             all_answers.append(final_answer)
         
@@ -111,8 +111,8 @@ def run_debate(number_of_rounds, number_of_agents):
         # print("\n")
         # print("\n")
         # print("\n")
-        print("\n")
-        print("\n")
+        # print("\n")
+        # print("\n")
     print(final_answers)
     return chat_histories
 
