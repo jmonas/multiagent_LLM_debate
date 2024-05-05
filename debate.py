@@ -19,7 +19,7 @@ def generate_round_query(answer):
     print("dont look", len(answer))
     print("dont look", answer)
 
-    return f"These are the solutions to the problem from other agents (s): {answer}. Using your previous answer and other agent's answers as additional advice, give an updated answer to the questio. If you find disagree with other agents, explain why. Put '!!!' before your final numerical answer."
+    return f"These are the solutions to the problem from other agents(s): {answer}. Using your previous answer and other agent's answers as additional advice, give an updated answer to the question. If you disagree with other agents, explain why. Put '!!!' before your final numerical answer."
 
 def clean_text(response):
     last_model_pos = response.rfind("model")
@@ -123,7 +123,7 @@ def run_debate(number_of_rounds, number_of_agents):
 
 num_debates = 20
 number_of_agents = 3
-num_rounds = 3
+num_rounds = 4
 agents_correct = [0] * number_of_agents
 for _ in range(num_debates):
     start_time = time.time()
@@ -135,8 +135,9 @@ for _ in range(num_debates):
                 agents_correct[i] +=1
     if not all(x == answers[0][0] for x in answers[0]) and all(x == answers[-1][0] for x in answers[-1]):
         print("SUCCESS, WRONG CHANGED RIGHT")
-        print("SUCCESS, WRONG CHANGED RIGHT")
-        print("SUCCESS, WRONG CHANGED RIGHT")
+    if all(x == answers[0][0] for x in answers[0]) and answers[0][0] == truth and not all(x == answers[-1][0] for x in answers[-1]):
+        print("FAILURE, RIGHT CHANGED WRONG ")
+
 
     stop_time = time.time()
     print("elapsed time: ", stop_time - start_time)
