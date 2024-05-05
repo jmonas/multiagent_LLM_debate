@@ -75,13 +75,13 @@ def run_debate(number_of_rounds, number_of_agents):
     print("\n")
 
     
-    chat_histories = [[{"role": "user", "content": f"What is the result of: {expression}? Show your steps and make sure to state your answer at the end of the response. Put '!!!' before your final numerical answer. EXAMPLE: Say the question is 1+1. After your reasoning, you would write:  !!! 2."}] for _ in range(number_of_agents)]
+    chat_histories = [[{"role": "user", "content": f"What is the answer to: {expression}? Show your steps and make sure to state your answer at the end of the response. Put '!!!' before your final numerical answer. EXAMPLE: Say the question is 1+1. After your reasoning, you would write:  !!! 2."}] for _ in range(number_of_agents)]
     final_answers = []
     for round_num in range(number_of_rounds):
-        # print(f"ROUND {round_num + 1} RESULTS")
-        # print("---------------------------")
-        # print("---------------------------")
-        # print("---------------------------")
+        print(f"ROUND {round_num + 1} RESULTS")
+        print("---------------------------")
+        print("---------------------------")
+        print("---------------------------")
 
         all_responses = []
         all_answers = []
@@ -93,24 +93,24 @@ def run_debate(number_of_rounds, number_of_agents):
             chat_histories[i].append({"role": "model", "content": response_cleaned})
 
             all_responses.append(response_cleaned)
-            # print("\n")
-            # print("\n")
-            # print(f"Agent {i+1} Results:")
-            # print(response_cleaned)
+            print("\n")
+            print("\n")
+            print(f"Agent {i+1} Results:")
+            print(response_cleaned)
             final_answer = parse_final_answer_correctly(response_cleaned, expression, expression_w_spaces)
             all_answers.append(final_answer)
         
         final_answers.append(all_answers)   
-        # print("EXTRACTED ANSWERS")
+        print("EXTRACTED ANSWERS")
         for i, ans in enumerate(all_answers):
-            # print(f"ANSWER {i+1}: ", ans)
+            print(f"ANSWER {i+1}: ", ans)
             aggregated_responses = ' '.join([f"AGENT {idx}: " + resp for idx, resp in enumerate(all_responses) if idx != i])
             chat_histories[i].append({"role": "user", "content": generate_round_query(aggregated_responses)})
         
-        # print("\n")
-        # print("\n")
-        # print("\n")
-        # print("\n")
+        print("\n")
+        print("\n")
+        print("\n")
+        print("\n")
         # print("\n")
         # print("\n")
     print(final_answers)
