@@ -62,8 +62,8 @@ def parse_final_answer_correctly(text, expression, expression_w_spaces):
 def run_debate(number_of_rounds, number_of_agents):
     numbers = random.sample(range(1, 10), 4)
     operators = random.choices(['+','-'], k=3)
-    expression = f"{numbers[0]}{operators[0]}{numbers[1]}{operators[1]}{numbers[2]}{operators[2]}{numbers[3]}{operators[3]}{numbers[4]}"
-    expression_w_spaces = f"{numbers[0]} {operators[0]} {numbers[1]} {operators[1]} {numbers[2]} {operators[2]} {numbers[3]} {operators[3]} {numbers[4]} ="
+    expression = f"{numbers[0]}{operators[0]}{numbers[1]}{operators[1]}{numbers[2]}{operators[2]}{numbers[3]}"
+    expression_w_spaces = f"{numbers[0]} {operators[0]} {numbers[1]} {operators[1]} {numbers[2]} {operators[2]} {numbers[3]} ="
     print("\n")
     print("\n")
     print(f"STARTING {number_of_agents}-AGENT DEBATE")
