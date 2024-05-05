@@ -3,7 +3,7 @@ import torch
 import random
 import re
 import time
-
+import numpy as np
 # Initialize the models and tokenizer
 tokenizer = AutoTokenizer.from_pretrained("gg-hf/gemma-7b-it", cache_dir="/scratch/gpfs/jmonas/.cache/")
 model = AutoModelForCausalLM.from_pretrained("gg-hf/gemma-7b-it", device_map="auto", torch_dtype=torch.float16, cache_dir="/scratch/gpfs/jmonas/.cache/")
@@ -117,11 +117,26 @@ def run_debate(number_of_rounds, number_of_agents):
         # print("\n")
         # print("\n")
     print(final_answers)
-    return chat_histories
+    return eval(expression), final_answers
 
-for _ in range(10):
+
+
+number_of_agents = 2
+agents_correct = [0] * number_of_agents
+num_debates = 3
+for _ in range(num_debates):
     start_time = time.time()
-    final_chat_history = run_debate(3, 2)
+    truth, answers = run_debate(3, 2)
+
+    for i, ans in enumerate(answers[-1]):
+        if ans.isdigit() or (ans.startswith('-') and ans[1:].isdigit()):
+            if int(ans) == truth:
+                agents_correct[i] +=1
+            if not all(x == answers[0][0] for x in answers[0]):
+                print("SUCCESS, WRONG CHANGED RIGHT")
+                print("SUCCESS, WRONG CHANGED RIGHT")
+                print("SUCCESS, WRONG CHANGED RIGHT")
+
     stop_time = time.time()
     print("elapsed time: ", stop_time - start_time)
     print("\n")
@@ -132,13 +147,8 @@ for _ in range(10):
     print("\n")
     print("\n")
     print("\n")
-    print("\n")
-    print("\n")
-    print("\n")
-    print("\n")
-    print("\n")
-    print("\n")
-    print("\n")
 
+
+print("ACCURACY: ", np.array(agents_correct)/num_debates)
 
 
