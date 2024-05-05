@@ -4,10 +4,29 @@ import random
 import re
 import time
 import numpy as np
+import json
+import os
+from datetime import datetime
 # Initialize the models and tokenizer
 tokenizer = AutoTokenizer.from_pretrained("gg-hf/gemma-7b-it", cache_dir="/scratch/gpfs/jmonas/.cache/")
 model = AutoModelForCausalLM.from_pretrained("gg-hf/gemma-7b-it", device_map="auto", torch_dtype=torch.float16, cache_dir="/scratch/gpfs/jmonas/.cache/")
 
+
+
+def append_to_json(file_path, new_data):
+    # Check if file exists and read data if it does, otherwise start with an empty list
+    if os.path.exists(file_path):
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+    else:
+        data = []
+
+    # Append new entry to data list
+    data.append(new_data)
+
+    # Write the updated list back to the file
+    with open(file_path, 'w') as file:
+        json.dump(data, file, indent=4)
 
 # Define a function to format the chat history with the chat template
 def format_chat(chat_history):
@@ -119,27 +138,53 @@ def run_debate(number_of_rounds, number_of_agents):
         # print("\n")
     print("CORRECT ANSWER: ", eval(expression))
     print(final_answers)
-    return eval(expression), final_answers
+
+    return expression, eval(expression), final_answers
 
 
-num_debates = 20
+
+
+
+current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+json_file_path = f'results/debate_results_{current_time}.json'
+
+
+num_debates = 2
 number_of_agents = 3
 num_rounds = 4
 agents_correct = [0] * number_of_agents
 for _ in range(num_debates):
     start_time = time.time()
-    truth, answers = run_debate(num_rounds, number_of_agents)
+    expression, truth, answers = run_debate(num_rounds, number_of_agents)
+
+    wrong_to_right = False
+    # right_to_wrong = False
+    agents_flag = {}
 
     for i, ans in enumerate(answers[-1]):
         if ans.isdigit() or (ans.startswith('-') and ans[1:].isdigit()):
             if int(ans) == truth:
                 agents_correct[i] +=1
-    if not all(x == answers[0][0] for x in answers[0]) and all(x == answers[-1][0] for x in answers[-1]):
+                agents_flag[i] =1
+            else: 
+                agents_flag[i] =0
+    if  any(x != truth for x in answers[0]) and all(x == answers[-1][0] for x in answers[-1]) and answers[-1][0] == truth:
         print("SUCCESS, WRONG CHANGED RIGHT")
-    if all(x == answers[0][0] for x in answers[0]) and answers[0][0] == truth and not all(x == answers[-1][0] for x in answers[-1]):
-        print("FAILURE, RIGHT CHANGED WRONG ")
 
+        wrong_to_right = True
+    # if any(x == truth for x in answers[0]) and not all(x == answers[-1][0] for x in answers[-1]):
+    #     print("FAILURE, RIGHT CHANGED WRONG ")
+    storage_json = {
+        "problem" :expression,
+        "truth" :  truth,
+        "round_answers" : answers,
+        "wrong_to_right": wrong_to_right,
+        # "right_to_wrong": right_to_wrong,
+        "final_agent_ans_flags": agents_flag,
+        "all_agents_right" : all(x == answers[-1][0] for x in answers[-1]) and answers[-1][0] == truth
+    }
 
+    append_to_json(json_file_path, storage_json)
     stop_time = time.time()
     print("elapsed time: ", stop_time - start_time)
     print("\n")
