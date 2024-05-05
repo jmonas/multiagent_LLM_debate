@@ -91,6 +91,8 @@ def run_debate(number_of_rounds, number_of_agents):
             chat_histories[i].append({"role": "model", "content": response_cleaned})
 
             all_responses.append(response_cleaned)
+            print("\n")
+            print("\n")
             print(f"Agent {i+1} Results:")
             print(response_cleaned)
             final_answer = parse_final_answer_correctly(response_cleaned, expression, expression_w_spaces)
@@ -111,7 +113,24 @@ def run_debate(number_of_rounds, number_of_agents):
         print("\n")
     print(final_answers)
     return chat_histories
-final_chat_history = run_debate(3, 3)
+
+for _ in range(5):
+    final_chat_history = run_debate(3, 2)
+    print("\n")
+    print("\n")
+    print("\n")
+    print("\n")
+    print("\n")
+    print("\n")
+    print("\n")
+    print("\n")
+    print("\n")
+    print("\n")
+    print("\n")
+    print("\n")
+    print("\n")
+    print("\n")
+    print("\n")
 
 
 
