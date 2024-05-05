@@ -121,13 +121,13 @@ def run_debate(number_of_rounds, number_of_agents):
     return eval(expression), final_answers
 
 
-
-number_of_agents = 4
+num_debates = 20
+number_of_agents = 3
+num_rounds = 3
 agents_correct = [0] * number_of_agents
-num_debates = 30
 for _ in range(num_debates):
     start_time = time.time()
-    truth, answers = run_debate(3, 2)
+    truth, answers = run_debate(num_rounds, number_of_agents)
 
     for i, ans in enumerate(answers[-1]):
         if ans.isdigit() or (ans.startswith('-') and ans[1:].isdigit()):
