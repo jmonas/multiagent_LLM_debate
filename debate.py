@@ -33,7 +33,7 @@ def clean_text(response):
     return extracted_text.strip()
 
 
-def parse_final_answer_correctly(text):
+def parse_final_answer_correctly(text, expression, expression_w_spaces):
     text = text.replace(expression,"")
     text = text.replace(expression_w_spaces,"")
     text = text.replace(",","")
@@ -55,16 +55,22 @@ def parse_final_answer_correctly(text):
         return "No answer found"
 
 
-numbers = random.sample(range(1, 10), 5)
-operators = random.choices(['+', '-', '*'], k=4)
-expression = f"{numbers[0]}{operators[0]}{numbers[1]}{operators[1]}{numbers[2]}{operators[2]}{numbers[3]}{operators[3]}{numbers[4]}"
-expression_w_spaces = f"{numbers[0]} {operators[0]} {numbers[1]} {operators[1]} {numbers[2]} {operators[2]} {numbers[3]} {operators[3]} {numbers[4]} ="
-
-print("EQUATION: ", expression)
-print("CORRECT ANSWER: ", eval(expression))
 
 
 def run_debate(number_of_rounds, number_of_agents):
+    numbers = random.sample(range(1, 10), 5)
+    operators = random.choices(['+', '-', '*'], k=4)
+    expression = f"{numbers[0]}{operators[0]}{numbers[1]}{operators[1]}{numbers[2]}{operators[2]}{numbers[3]}{operators[3]}{numbers[4]}"
+    expression_w_spaces = f"{numbers[0]} {operators[0]} {numbers[1]} {operators[1]} {numbers[2]} {operators[2]} {numbers[3]} {operators[3]} {numbers[4]} ="
+
+    print(f"STARTING {number_of_agents} DEBATE")
+    print("EQUATION: ", expression)
+    print("CORRECT ANSWER: ", eval(expression))
+    print("---------------------------")
+    print("\n")
+    print("\n")
+    print("\n")
+
     
     chat_histories = [[{"role": "user", "content": f"What is the result of: {expression}? Show your steps and make sure to state your answer at the end of the response. Put '!!!' before your final numerical answer."}] for _ in range(number_of_agents)]
     final_answers = []
@@ -86,7 +92,7 @@ def run_debate(number_of_rounds, number_of_agents):
             all_responses.append(response_cleaned)
             print(f"Agent {i+1} Results:")
             print(response_cleaned)
-            final_answer = parse_final_answer_correctly(response_cleaned)
+            final_answer = parse_final_answer_correctly(response_cleaned, expression, expression_w_spaces)
             all_answers.append(final_answer)
         
         final_answers.append(all_answers)   
@@ -102,8 +108,9 @@ def run_debate(number_of_rounds, number_of_agents):
         print("\n")
         print("\n")
         print("\n")
+    print(final_answers)
     return chat_histories
-final_chat_history_A, final_chat_history_B  = run_debate(3, 2)
+final_chat_history = run_debate(3, 2)
 
 
 
