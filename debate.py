@@ -16,7 +16,7 @@ def format_chat(chat_history):
     return inputs
 
 def generate_round_query(answer):
-    return f"These are the solutions to the problem from other agents: {answer}. Using other agent's answers as additional advice, give an updated answer to the questio. If you find disagree with other agents, explain why. Put '!!!' before your final numerical answer."
+    return f"These are the solutions to the problem from other agents: {answer}. Using your previous answer and other agent's answers as additional advice, give an updated answer to the questio. If you find disagree with other agents, explain why. Put '!!!' before your final numerical answer."
 
 def clean_text(response):
     last_model_pos = response.rfind("model")
