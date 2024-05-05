@@ -159,9 +159,9 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         print("\n")
         print("\n")
 
-        pattern = r"(\*\*Additional Notes:\*\*.+|\*\*Alternative Answer:\*\*.+|\*\*Reasoning:\*\*.+|\*\*Explanation:\*\*.+)"
-        response_A_cleaned = re.sub(pattern, "", response_A_cleaned, flags=re.DOTALL)
-        response_B_cleaned = re.sub(pattern, "", response_B_cleaned, flags=re.DOTALL)
+        # pattern = r"(\*\*Additional Notes:\*\*.+|\*\*Alternative Answer:\*\*.+|\*\*Reasoning:\*\*.+|\*\*Explanation:\*\*.+)"
+        # response_A_cleaned = re.sub(pattern, "", response_A_cleaned, flags=re.DOTALL)
+        # response_B_cleaned = re.sub(pattern, "", response_B_cleaned, flags=re.DOTALL)
         
 
         # extract_query_A = f" {response_A_cleaned}. Extract the final answer from the text. Only output the numerical answer."
