@@ -16,7 +16,10 @@ def format_chat(chat_history):
     return inputs
 
 def generate_round_query(answer):
-    return f"These are the solutions to the problem from other agents: {answer}. Using your previous answer and other agent's answers as additional advice, give an updated answer to the questio. If you find disagree with other agents, explain why. Put '!!!' before your final numerical answer."
+    print("dont look", len(answer))
+    print("dont look", answer)
+
+    return f"These are the solutions to the problem from other agents (s): {answer}. Using your previous answer and other agent's answers as additional advice, give an updated answer to the questio. If you find disagree with other agents, explain why. Put '!!!' before your final numerical answer."
 
 def clean_text(response):
     last_model_pos = response.rfind("model")
@@ -87,7 +90,7 @@ def run_debate(number_of_rounds, number_of_agents):
         all_answers = []
         for i in range(number_of_agents):
             inputs = format_chat(chat_histories[i])
-            outputs = model.generate(input_ids = inputs, max_new_tokens=125, do_sample = True, temperature = .5)
+            outputs = model.generate(input_ids = inputs, max_new_tokens=125, do_sample = True, temperature = .55)
             response = tokenizer.decode(outputs[0], skip_special_tokens=True)
             response_cleaned = clean_text(response)
             chat_histories[i].append({"role": "model", "content": response_cleaned})
