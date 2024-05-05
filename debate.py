@@ -124,7 +124,7 @@ def run_debate(number_of_rounds, number_of_agents):
 
 number_of_agents = 2
 agents_correct = [0] * number_of_agents
-num_debates = 10
+num_debates = 30
 for _ in range(num_debates):
     start_time = time.time()
     truth, answers = run_debate(3, 2)
