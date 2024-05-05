@@ -116,7 +116,7 @@ def run_debate(number_of_rounds, number_of_agents):
     print(final_answers)
     return chat_histories
 
-for _ in range(3):
+for _ in range(10):
     start_time = time.time()
     final_chat_history = run_debate(3, 2)
     stop_time = time.time()
