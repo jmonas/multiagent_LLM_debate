@@ -62,8 +62,9 @@ def run_debate(number_of_rounds, number_of_agents):
     operators = random.choices(['+', '-', '*'], k=4)
     expression = f"{numbers[0]}{operators[0]}{numbers[1]}{operators[1]}{numbers[2]}{operators[2]}{numbers[3]}{operators[3]}{numbers[4]}"
     expression_w_spaces = f"{numbers[0]} {operators[0]} {numbers[1]} {operators[1]} {numbers[2]} {operators[2]} {numbers[3]} {operators[3]} {numbers[4]} ="
-
-    print(f"STARTING {number_of_agents} DEBATE")
+    print("\n")
+    print("\n")
+    print(f"STARTING {number_of_agents}-AGENT DEBATE")
     print("EQUATION: ", expression)
     print("CORRECT ANSWER: ", eval(expression))
     print("---------------------------")
@@ -84,7 +85,7 @@ def run_debate(number_of_rounds, number_of_agents):
         all_answers = []
         for i in range(number_of_agents):
             inputs = format_chat(chat_histories[i])
-            outputs = model.generate(input_ids = inputs, max_new_tokens=100, do_sample = True, temperature = .75)
+            outputs = model.generate(input_ids = inputs, max_new_tokens=100, do_sample = True, temperature = .7)
             response = tokenizer.decode(outputs[0], skip_special_tokens=True)
             response_cleaned = clean_text(response)
             chat_histories[i].append({"role": "model", "content": response_cleaned})
@@ -110,7 +111,7 @@ def run_debate(number_of_rounds, number_of_agents):
         print("\n")
     print(final_answers)
     return chat_histories
-final_chat_history = run_debate(3, 2)
+final_chat_history = run_debate(3, 3)
 
 
 
