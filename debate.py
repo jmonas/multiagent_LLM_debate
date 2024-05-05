@@ -2,6 +2,8 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 import random
 import re
+import time
+
 # Initialize the models and tokenizer
 tokenizer = AutoTokenizer.from_pretrained("gg-hf/gemma-7b-it", cache_dir="/scratch/gpfs/jmonas/.cache/")
 model = AutoModelForCausalLM.from_pretrained("gg-hf/gemma-7b-it", device_map="auto", torch_dtype=torch.float16, cache_dir="/scratch/gpfs/jmonas/.cache/")
@@ -85,37 +87,40 @@ def run_debate(number_of_rounds, number_of_agents):
         all_answers = []
         for i in range(number_of_agents):
             inputs = format_chat(chat_histories[i])
-            outputs = model.generate(input_ids = inputs, max_new_tokens=120, do_sample = True, temperature = .7)
+            outputs = model.generate(input_ids = inputs, max_new_tokens=125, do_sample = True, temperature = .7)
             response = tokenizer.decode(outputs[0], skip_special_tokens=True)
             response_cleaned = clean_text(response)
             chat_histories[i].append({"role": "model", "content": response_cleaned})
 
             all_responses.append(response_cleaned)
-            print("\n")
-            print("\n")
-            print(f"Agent {i+1} Results:")
+            # print("\n")
+            # print("\n")
+            # print(f"Agent {i+1} Results:")
             print(response_cleaned)
             final_answer = parse_final_answer_correctly(response_cleaned, expression, expression_w_spaces)
             all_answers.append(final_answer)
         
         final_answers.append(all_answers)   
-        print("EXTRACTED ANSWERS")
+        # print("EXTRACTED ANSWERS")
         for i, ans in enumerate(all_answers):
-            print(f"ANSWER {i+1}: ", ans)
+            # print(f"ANSWER {i+1}: ", ans)
             aggregated_responses = ' '.join([f"AGENT {idx}: " + resp for idx, resp in enumerate(all_responses) if idx != i])
             chat_histories[i].append({"role": "user", "content": generate_round_query(aggregated_responses)})
         
-        print("\n")
-        print("\n")
-        print("\n")
-        print("\n")
+        # print("\n")
+        # print("\n")
+        # print("\n")
+        # print("\n")
         print("\n")
         print("\n")
     print(final_answers)
     return chat_histories
 
 for _ in range(5):
+    start_time = time.time()
     final_chat_history = run_debate(3, 2)
+    stop_time = time.time()
+    print("elapsed time: ", stop_time - start_time)
     print("\n")
     print("\n")
     print("\n")
