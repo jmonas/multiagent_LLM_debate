@@ -123,7 +123,7 @@ def run_debate(number_of_rounds, number_of_agents):
 
 number_of_agents = 2
 agents_correct = [0] * number_of_agents
-num_debates = 3
+num_debates = 10
 for _ in range(num_debates):
     start_time = time.time()
     truth, answers = run_debate(3, 2)
@@ -132,10 +132,10 @@ for _ in range(num_debates):
         if ans.isdigit() or (ans.startswith('-') and ans[1:].isdigit()):
             if int(ans) == truth:
                 agents_correct[i] +=1
-            if not all(x == answers[0][0] for x in answers[0]):
-                print("SUCCESS, WRONG CHANGED RIGHT")
-                print("SUCCESS, WRONG CHANGED RIGHT")
-                print("SUCCESS, WRONG CHANGED RIGHT")
+    if not all(x == answers[0][0] for x in answers[0]) and all(x == answers[-1][0] for x in answers[0]):
+        print("SUCCESS, WRONG CHANGED RIGHT")
+        print("SUCCESS, WRONG CHANGED RIGHT")
+        print("SUCCESS, WRONG CHANGED RIGHT")
 
     stop_time = time.time()
     print("elapsed time: ", stop_time - start_time)
