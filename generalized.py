@@ -8,7 +8,7 @@ model_A = AutoModelForCausalLM.from_pretrained("gg-hf/gemma-7b-it", device_map="
 # model_B = AutoModelForCausalLM.from_pretrained("gg-hf/gemma-7b-it", device_map="auto", torch_dtype=torch.float16, cache_dir="/scratch/network/jmonas/.cache/")
 
 # Randomly generate three numbers between 1-30
-numbers = random.sample(range(1, 20), 5)
+numbers = random.sample(range(1, 10), 5)
 
 # Randomly choose two different mathematical operators from the set
 operators = random.choices(['+', '-', '*'], k=4)
