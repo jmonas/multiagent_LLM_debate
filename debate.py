@@ -60,10 +60,10 @@ def parse_final_answer_correctly(text, expression, expression_w_spaces):
 
 
 def run_debate(number_of_rounds, number_of_agents):
-    numbers = random.sample(range(1, 10), 3)
-    operators = random.choices(['+','-'], k=2)
-    expression = f"{numbers[0]}{operators[0]}{numbers[1]}{operators[1]}{numbers[2]}"
-    expression_w_spaces = f"{numbers[0]} {operators[0]} {numbers[1]} {operators[1]} {numbers[2]} ="
+    numbers = random.sample(range(1, 10), 4)
+    operators = random.choices(['+','-'], k=3)
+    expression = f"{numbers[0]}{operators[0]}{numbers[1]}{operators[1]}{numbers[2]}{operators[2]}{numbers[3]}{operators[3]}{numbers[4]}"
+    expression_w_spaces = f"{numbers[0]} {operators[0]} {numbers[1]} {operators[1]} {numbers[2]} {operators[2]} {numbers[3]} {operators[3]} {numbers[4]} ="
     print("\n")
     print("\n")
     print(f"STARTING {number_of_agents}-AGENT DEBATE")
@@ -75,7 +75,7 @@ def run_debate(number_of_rounds, number_of_agents):
     print("\n")
 
     
-    chat_histories = [[{"role": "user", "content": f"What is the result of: {expression}? Show your steps and make sure to state your answer at the end of the response. Put '!!!' before your final numerical answer."}] for _ in range(number_of_agents)]
+    chat_histories = [[{"role": "user", "content": f"What is the result of: {expression}? Show your steps and make sure to state your answer at the end of the response. Put '!!!' before your final numerical answer. EXAMPLE: Say the question is 1+1. After your reasoning, you would write:  !!! 2."}] for _ in range(number_of_agents)]
     final_answers = []
     for round_num in range(number_of_rounds):
         # print(f"ROUND {round_num + 1} RESULTS")
