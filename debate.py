@@ -122,7 +122,7 @@ def run_debate(number_of_rounds, number_of_agents):
 
 
 
-number_of_agents = 2
+number_of_agents = 4
 agents_correct = [0] * number_of_agents
 num_debates = 30
 for _ in range(num_debates):
