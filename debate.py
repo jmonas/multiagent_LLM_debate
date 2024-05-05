@@ -16,7 +16,7 @@ def format_chat(chat_history):
     return inputs
 
 def generate_round_query(answer):
-    return f"These are the solutions to the problem from other agents: {answer}. Examine their reasoning and calculation method. Based on their conclusion and your analysis, can you offer a revised or alternative answer? If you find discrepancies or disagree, please explain the reasoning behind your perspective. Put '!!!' before your final numerical answer."
+    return f"These are the solutions to the problem from other agents: {answer}. Using other agent's answers as additional advice, give an updated answer to the questio. If you find disagree with other agents, explain why. Put '!!!' before your final numerical answer."
 
 def clean_text(response):
     last_model_pos = response.rfind("model")
@@ -116,7 +116,7 @@ def run_debate(number_of_rounds, number_of_agents):
     print(final_answers)
     return chat_histories
 
-for _ in range(10):
+for _ in range(3):
     start_time = time.time()
     final_chat_history = run_debate(3, 2)
     stop_time = time.time()
