@@ -25,7 +25,7 @@ def format_chat(chat_history):
     return inputs
 
 def generate_round_query(answer):
-    return f"Another agent has provided this answer: {answer}. Examine their reasoning and calculation method. Based on their conclusion and your analysis, can you offer a revised or alternative answer? If you find discrepancies or disagree, please explain the reasoning behind your perspective. Put '!!!' before your final numerical answer."
+    return f"These are the solutions to the problem from other agents: {answer}. Examine their reasoning and calculation method. Based on their conclusion and your analysis, can you offer a revised or alternative answer? If you find discrepancies or disagree, please explain the reasoning behind your perspective. Put '!!!' before your final numerical answer."
 
 def clean_text(response):
     last_model_pos = response.rfind("model")
@@ -139,7 +139,7 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         
         # Generate a response from model_A
         inputs = format_chat(chat_history_A)
-        outputs_A = model_A.generate(input_ids = inputs, max_new_tokens=100, do_sample = True, temperature = .8)
+        outputs_A = model_A.generate(input_ids = inputs, max_new_tokens=100, do_sample = True, temperature = .75)
         response_A = tokenizer.decode(outputs_A[0], skip_special_tokens=True)
         response_A_cleaned = clean_text(response_A)
 
@@ -149,7 +149,7 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         
         # Generate a response from model_B
         inputs = format_chat(chat_history_B)
-        outputs_B = model_A.generate(input_ids = inputs, max_new_tokens=100, do_sample = True, temperature = .8)
+        outputs_B = model_A.generate(input_ids = inputs, max_new_tokens=100, do_sample = True, temperature = .75)
         response_B = tokenizer.decode(outputs_B[0], skip_special_tokens=True)
         response_B_cleaned = clean_text(response_B)
         print("Agent B Results:")
