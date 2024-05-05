@@ -87,7 +87,7 @@ def run_debate(number_of_rounds, number_of_agents):
         all_answers = []
         for i in range(number_of_agents):
             inputs = format_chat(chat_histories[i])
-            outputs = model.generate(input_ids = inputs, max_new_tokens=125, do_sample = True, temperature = .83)
+            outputs = model.generate(input_ids = inputs, max_new_tokens=125, do_sample = True, temperature = .75)
             response = tokenizer.decode(outputs[0], skip_special_tokens=True)
             response_cleaned = clean_text(response)
             chat_histories[i].append({"role": "model", "content": response_cleaned})
