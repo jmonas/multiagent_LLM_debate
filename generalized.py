@@ -164,28 +164,28 @@ def run_debate(number_of_rounds, chat_history_A, chat_history_B):
         response_B_cleaned = re.sub(pattern, "", response_B_cleaned, flags=re.DOTALL)
         
 
-        extract_query_A = f" {response_A_cleaned}. Extract the final answer from the text. Only output the numerical answer."
-        extract_query_B = f" {response_B_cleaned}. Extract the final answer from the text. Only output the numerical answer."
-        extract_query_A_ids = tokenizer(extract_query_A, return_tensors="pt").to("cuda")
-        extract_query_B_ids = tokenizer(extract_query_B, return_tensors="pt").to("cuda")
+        # extract_query_A = f" {response_A_cleaned}. Extract the final answer from the text. Only output the numerical answer."
+        # extract_query_B = f" {response_B_cleaned}. Extract the final answer from the text. Only output the numerical answer."
+        # extract_query_A_ids = tokenizer(extract_query_A, return_tensors="pt").to("cuda")
+        # extract_query_B_ids = tokenizer(extract_query_B, return_tensors="pt").to("cuda")
 
-        extract_text_A_outputs = model_A.generate(**extract_query_A_ids, max_new_tokens=15)
-        extract_text_B_outputs = model_A.generate(**extract_query_B_ids, max_new_tokens=15)
+        # extract_text_A_outputs = model_A.generate(**extract_query_A_ids, max_new_tokens=15)
+        # extract_text_B_outputs = model_A.generate(**extract_query_B_ids, max_new_tokens=15)
         
-        extract_text_A_outputs = tokenizer.decode(extract_text_A_outputs[0], skip_special_tokens=True).replace(extract_query_A, "")
-        extract_text_B_outputs = tokenizer.decode(extract_text_B_outputs[0], skip_special_tokens=True).replace(extract_query_B, "")
-        cleaned_answer_A = parse_final_answer_correctly(extract_text_A_outputs)
-        cleaned_answer_B = parse_final_answer_correctly(extract_text_B_outputs)
+        # extract_text_A_outputs = tokenizer.decode(extract_text_A_outputs[0], skip_special_tokens=True).replace(extract_query_A, "")
+        # extract_text_B_outputs = tokenizer.decode(extract_text_B_outputs[0], skip_special_tokens=True).replace(extract_query_B, "")
+        cleaned_answer_A = parse_final_answer_correctly(response_A_cleaned)
+        cleaned_answer_B = parse_final_answer_correctly(response_B_cleaned)
 
         print("EXTRACTED ANSWERS")
         print("ANSWER A", cleaned_answer_A)
         print("ANSWER B", cleaned_answer_B)
         print("\n")
         print("\n")
-        print("WORK A")
-        print(extract_text_A_outputs)
-        print("WORK B")
-        print(extract_text_B_outputs)
+        # print("WORK A")
+        # print(extract_text_A_outputs)
+        # print("WORK B")
+        # print(extract_text_B_outputs)
         print("\n")
         print("\n")
         print("\n")
