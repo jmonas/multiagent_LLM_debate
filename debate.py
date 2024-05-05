@@ -61,7 +61,7 @@ def parse_final_answer_correctly(text, expression, expression_w_spaces):
 
 def run_debate(number_of_rounds, number_of_agents):
     numbers = random.sample(range(1, 10), 5)
-    operators = random.choices(['+', '-', '*'], k=4)
+    operators = random.choices(['+', '*'], k=4)
     expression = f"{numbers[0]}{operators[0]}{numbers[1]}{operators[1]}{numbers[2]}{operators[2]}{numbers[3]}{operators[3]}{numbers[4]}"
     expression_w_spaces = f"{numbers[0]} {operators[0]} {numbers[1]} {operators[1]} {numbers[2]} {operators[2]} {numbers[3]} {operators[3]} {numbers[4]} ="
     print("\n")
@@ -87,7 +87,7 @@ def run_debate(number_of_rounds, number_of_agents):
         all_answers = []
         for i in range(number_of_agents):
             inputs = format_chat(chat_histories[i])
-            outputs = model.generate(input_ids = inputs, max_new_tokens=125, do_sample = True, temperature = .8)
+            outputs = model.generate(input_ids = inputs, max_new_tokens=125, do_sample = True, temperature = .83)
             response = tokenizer.decode(outputs[0], skip_special_tokens=True)
             response_cleaned = clean_text(response)
             chat_histories[i].append({"role": "model", "content": response_cleaned})
@@ -116,7 +116,7 @@ def run_debate(number_of_rounds, number_of_agents):
     print(final_answers)
     return chat_histories
 
-for _ in range(5):
+for _ in range(10):
     start_time = time.time()
     final_chat_history = run_debate(3, 2)
     stop_time = time.time()
