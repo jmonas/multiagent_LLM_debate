@@ -75,7 +75,7 @@ def run_debate(number_of_rounds, number_of_agents):
     print("\n")
 
     
-    chat_histories = [[{"role": "user", "content": f"What is the answer to: {expression}? Show your steps and make sure to state your answer at the end of the response. Put '!!!' before your final numerical answer. EXAMPLE: Say the question is 1+1. After your reasoning, you would write:  !!! 2."}] for _ in range(number_of_agents)]
+    chat_histories = [[{"role": "user", "content": f"What is the answer to: {expression}? Show your steps and make sure to state your answer at the end of the response. Put '!!!' before your final numerical answer. EXAMPLE: !!! 294."}] for _ in range(number_of_agents)]
     final_answers = []
     for round_num in range(number_of_rounds):
         print(f"ROUND {round_num + 1} RESULTS")
