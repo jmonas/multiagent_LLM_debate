@@ -27,7 +27,7 @@ def append_to_json(file_path, new_data):
     # Write the updated list back to the file
     with open(file_path, 'w') as file:
         json.dump(data, file, indent=4)
-    print("DUMPED", flush=True)
+    print("DUMPED", )
 
 # Define a function to format the chat history with the chat template
 def format_chat(chat_history):
@@ -86,10 +86,10 @@ def run_debate(number_of_rounds, number_of_agents, temperature):
     expression_w_spaces = f"{numbers[0]} {operators[0]} {numbers[1]} {operators[1]} {numbers[2]} {operators[2]} {numbers[3]} ="
     print("\n")
     print("\n")
-    print(f"STARTING {number_of_agents}-AGENT DEBATE", flush=True)
-    print("EQUATION: ", expression, flush=True)
-    print("CORRECT ANSWER: ", eval(expression), flush=True)
-    print("---------------------------", flush=True)
+    print(f"STARTING {number_of_agents}-AGENT DEBATE", )
+    print("EQUATION: ", expression, )
+    print("CORRECT ANSWER: ", eval(expression), )
+    print("---------------------------", )
     print("\n")
     print("\n")
     print("\n")
@@ -99,10 +99,10 @@ def run_debate(number_of_rounds, number_of_agents, temperature):
     final_answers = []
     for round_num in range(number_of_rounds):
         torch.cuda.empty_cache()
-        print(f"ROUND {round_num + 1} RESULTS", flush=True)
-        print("---------------------------", flush=True)
-        print("---------------------------", flush=True)
-        print("---------------------------", flush=True)
+        print(f"ROUND {round_num + 1} RESULTS", )
+        print("---------------------------", )
+        print("---------------------------", )
+        print("---------------------------", )
 
         all_responses = []
         all_answers = []
@@ -114,28 +114,28 @@ def run_debate(number_of_rounds, number_of_agents, temperature):
             chat_histories[i].append({"role": "model", "content": response_cleaned})
 
             all_responses.append(response_cleaned)
-            print("\n", flush=True)
-            print("\n", flush=True)
-            print(f"Agent {i+1} Results:", flush=True)
-            print(response_cleaned, flush=True)
+            print("\n", )
+            print("\n", )
+            print(f"Agent {i+1} Results:", )
+            print(response_cleaned, )
             final_answer = parse_final_answer_correctly(response_cleaned, expression, expression_w_spaces)
             all_answers.append(final_answer)
         
         final_answers.append(all_answers)   
-        print("EXTRACTED ANSWERS", flush=True)
+        print("EXTRACTED ANSWERS", )
         for i, ans in enumerate(all_answers):
             print(f"ANSWER {i+1}: ", ans)
             aggregated_responses = ' '.join([f"AGENT {idx}: " + resp for idx, resp in enumerate(all_responses) if idx != i])
             chat_histories[i].append({"role": "user", "content": generate_round_query(aggregated_responses)})
         
-        print("\n", flush=True)
-        print("\n", flush=True)
-        print("\n", flush=True)
-        print("\n", flush=True)
-        # print("\n", flush=True)
-        # print("\n", flush=True)
-    print("CORRECT ANSWER: ", eval(expression), flush=True)
-    print(final_answers, flush=True)
+        print("\n", )
+        print("\n", )
+        print("\n", )
+        print("\n", )
+        # print("\n", )
+        # print("\n", )
+    print("CORRECT ANSWER: ", eval(expression), )
+    print(final_answers, )
 
     return expression, eval(expression), final_answers
 
@@ -146,16 +146,16 @@ def run_debate(number_of_rounds, number_of_agents, temperature):
 
 
 
-num_debates = 200
+# num_debates = 200
 number_of_agents = 2
 num_rounds = 2
 agents_correct = [0] * number_of_agents
 temperature = .2
 current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-json_file_path = f'results/debate_results_{number_of_agents}_{num_rounds}_{current_time}_{temperature}.json'
+# json_file_path = f'results/debate_results_{number_of_agents}_{num_rounds}_{current_time}_{temperature}.json'
 
-for debate_round in range(num_debates):
-    print("START", flush=True)
+for debate_round in range(1):
+    print("START", )
     start_time = time.time()
     expression, truth, answers = run_debate(num_rounds, number_of_agents, temperature)
 
@@ -191,19 +191,19 @@ for debate_round in range(num_debates):
         "all_agents_right" : all(x == answers[-1][0] for x in answers[-1]) and answers[-1][0] == stringified_truth
     }
 
-    append_to_json(json_file_path, storage_json)
+    # append_to_json(json_file_path, storage_json)
     stop_time = time.time()
-    print("elapsed time: ", stop_time - start_time, flush=True)
-    print("\n", flush=True)
-    print("\n", flush=True)
-    print("\n", flush=True)
-    print("\n", flush=True)
-    print("\n", flush=True)
-    print("\n", flush=True)
-    print("\n", flush=True)
-    print("\n", flush=True)
+    print("elapsed time: ", stop_time - start_time, )
+    print("\n", )
+    print("\n", )
+    print("\n", )
+    print("\n", )
+    print("\n", )
+    print("\n", )
+    print("\n", )
+    print("\n", )
 
 
-print("ACCURACY: ", np.array(agents_correct)/num_debates, flush=True)
+print("ACCURACY: ", np.array(agents_correct)/1, )
 
 
