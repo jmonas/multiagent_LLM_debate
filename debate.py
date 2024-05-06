@@ -154,6 +154,7 @@ temperature = .6
 current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 json_file_path = f'results/debate_results_{number_of_agents}_{num_rounds}_{current_time}_{temperature}.json'
 
+print(f"{num_debates}  - {number_of_agents} -  {num_rounds}   - {temperature}", flush=True)
 for debate_round in range(num_debates):
     print("START", flush=True)
     start_time = time.time()
