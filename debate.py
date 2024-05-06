@@ -78,7 +78,7 @@ def parse_final_answer_correctly(text, expression, expression_w_spaces):
 
 
 
-def run_debate(number_of_rounds, number_of_agents):
+def run_debate(number_of_rounds, number_of_agents, temperature):
     numbers = random.sample(range(1, 10), 4)
     operators = random.choices(['+','-', '*'], k=3)
     expression = f"{numbers[0]}{operators[0]}{numbers[1]}{operators[1]}{numbers[2]}{operators[2]}{numbers[3]}"
@@ -107,7 +107,7 @@ def run_debate(number_of_rounds, number_of_agents):
         all_answers = []
         for i in range(number_of_agents):
             inputs = format_chat(chat_histories[i])
-            outputs = model.generate(input_ids = inputs, max_new_tokens=125, do_sample = True, temperature = .55)
+            outputs = model.generate(input_ids = inputs, max_new_tokens=125, do_sample = True, temperature = temperature)
             response = tokenizer.decode(outputs[0], skip_special_tokens=True)
             response_cleaned = clean_text(response)
             chat_histories[i].append({"role": "model", "content": response_cleaned})
@@ -149,12 +149,13 @@ num_debates = 200
 number_of_agents = 3
 num_rounds = 2
 agents_correct = [0] * number_of_agents
+temperature = .2 
 current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-json_file_path = f'results/debate_results_{number_of_agents}_{num_rounds}_{current_time}.json'
+json_file_path = f'results/debate_results_{number_of_agents}_{num_rounds}_{current_time}_{temperature}.json'
 
 for debate_round in range(num_debates):
     start_time = time.time()
-    expression, truth, answers = run_debate(num_rounds, number_of_agents)
+    expression, truth, answers = run_debate(num_rounds, number_of_agents, temperature)
 
     stringified_truth = str(truth)
 
