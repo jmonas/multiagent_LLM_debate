@@ -18,4 +18,4 @@ module load cudnn/cuda-11.x/8.2.0
 module load anaconda3/2023.9
 conda activate /scratch/gpfs/jmonas/mambaforge/envs/LLM_debate
 
-python load_models.py
+python debate.py
