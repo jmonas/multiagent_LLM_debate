@@ -1,4 +1,4 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 import random
 import re
@@ -8,12 +8,9 @@ import json
 import os
 from datetime import datetime
 # Initialize the models and tokenizer
+tokenizer = AutoTokenizer.from_pretrained("/scratch/gpfs/jmonas/.cache/gemma-7b-it-8bit/")
+model = AutoModelForCausalLM.from_pretrained("/scratch/gpfs/jmonas/.cache/gemma-7b-it-8bit/", device_map="auto")
 
-
-quantization_config = BitsAndBytesConfig(load_in_8bit=True)
-
-tokenizer = AutoTokenizer.from_pretrained("gg-hf/gemma-7b-it", cache_dir="/scratch/gpfs/jmonas/.cache/")
-model = AutoModelForCausalLM.from_pretrained("gg-hf/gemma-7b-it", device_map="auto",  cache_dir="/scratch/gpfs/jmonas/.cache/", quantization_config=quantization_config)
 
 
 def append_to_json(file_path, new_data):
