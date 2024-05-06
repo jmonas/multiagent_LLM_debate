@@ -1,10 +1,8 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM,BitsAndBytesConfig
+from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 
-quantization_config = BitsAndBytesConfig(load_in_8bit=True)
-
-tokenizer = AutoTokenizer.from_pretrained("gg-hf/gemma-7b-it", cache_dir="/scratch/gpfs/jmonas/.cache/")
-model = AutoModelForCausalLM.from_pretrained("gg-hf/gemma-7b-it",cache_dir="/scratch/gpfs/jmonas/.cache/", quantization_config=quantization_config)
+tokenizer = AutoTokenizer.from_pretrained("google/gemma-7b-it", cache_dir="/scratch/gpfs/jmonas/.cache/", force_download=True)
+model = AutoModelForCausalLM.from_pretrained("merve/gemma-7b-it-8bit", device_map="auto", tcache_dir="/scratch/gpfs/jmonas/.cache/", force_download=True)
 
 # input_text = "Write me a poem about Machine Learning."
 # input_ids = tokenizer(input_text, return_tensors="pt").to("cuda")
