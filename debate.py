@@ -9,7 +9,7 @@ import os
 from datetime import datetime
 # Initialize the models and tokenizer
 tokenizer = AutoTokenizer.from_pretrained("gg-hf/gemma-7b-it", cache_dir="/scratch/gpfs/jmonas/.cache/")
-model = AutoModelForCausalLM.from_pretrained("/scratch/gpfs/jmonas/.cache/gemma-7b-it-8bit/")
+model = AutoModelForCausalLM.from_pretrained("gg-hf/gemma-7b-it", device_map="auto", torch_dtype=torch.float16, cache_dir="/scratch/gpfs/jmonas/.cache/")
 
 
 
@@ -150,7 +150,7 @@ num_debates = 200
 number_of_agents = 3
 num_rounds = 3
 agents_correct = [0] * number_of_agents
-temperature = .1
+temperature = .2
 current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 json_file_path = f'results/debate_results_{number_of_agents}_{num_rounds}_{current_time}_{temperature}.json'
 
