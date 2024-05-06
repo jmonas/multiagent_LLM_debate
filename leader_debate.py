@@ -150,7 +150,7 @@ num_debates = 300
 number_of_agents = 3
 num_rounds = 3
 agents_correct = [0] * number_of_agents
-temperatures = [0.4, 0.4, 1]
+temperatures = [0.2, 0.6, 0.6]
 current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 json_file_path = f'results/debate_results_leader_{number_of_agents}_{num_rounds}_{current_time}_{str(temperatures)}.json'
 
