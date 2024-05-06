@@ -12,7 +12,7 @@ from datetime import datetime
 
 quantization_config = BitsAndBytesConfig(load_in_8bit=True)
 
-tokenizer = AutoTokenizer.from_pretrained("gg-hf/gemma-7b-it", cache_dir="/scratch/gpfs/jmonas/.cache/", quantization_config=quantization_config)
+tokenizer = AutoTokenizer.from_pretrained("gg-hf/gemma-7b-it", cache_dir="/scratch/gpfs/jmonas/.cache/")
 model = AutoModelForCausalLM.from_pretrained("gg-hf/gemma-7b-it", device_map="auto", torch_dtype=torch.float16, cache_dir="/scratch/gpfs/jmonas/.cache/", quantization_config=quantization_config)
 
 
