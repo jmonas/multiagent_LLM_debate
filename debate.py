@@ -157,7 +157,7 @@ for _ in range(num_debates):
     start_time = time.time()
     expression, truth, answers = run_debate(num_rounds, number_of_agents)
 
-    answers = [[int(ans)for ans in rounds] for rounds in answers]
+    stringified_truth = str(truth)
 
     wrong_to_right = False
     # right_to_wrong = False
@@ -165,12 +165,12 @@ for _ in range(num_debates):
 
     for i, ans in enumerate(answers[-1]):
         if ans.isdigit() or (ans.startswith('-') and ans[1:].isdigit()):
-            if ans == truth:
+            if ans == stringified_truth:
                 agents_correct[i] +=1
                 agents_flag[i] =1
             else: 
                 agents_flag[i] =0
-    if  any(x != truth for x in answers[0]) and all(x == answers[-1][0] for x in answers[-1]) and answers[-1][0] == truth:
+    if  any(x != stringified_truth for x in answers[0]) and all(x == answers[-1][0] for x in answers[-1]) and answers[-1][0] == stringified_truth:
         print("SUCCESS, WRONG CHANGED RIGHT")
 
         wrong_to_right = True
@@ -178,12 +178,12 @@ for _ in range(num_debates):
     #     print("FAILURE, RIGHT CHANGED WRONG ")
     storage_json = {
         "problem" :expression,
-        "truth" :  truth,
+        "truth" :  stringified_truth,
         "round_answers" : answers,
         "wrong_to_right": wrong_to_right,
         # "right_to_wrong": right_to_wrong,
         "final_agent_ans_flags": agents_flag,
-        "all_agents_right" : all(x == answers[-1][0] for x in answers[-1]) and answers[-1][0] == truth
+        "all_agents_right" : all(x == answers[-1][0] for x in answers[-1]) and answers[-1][0] == stringified_truth
     }
 
     append_to_json(json_file_path, storage_json)
