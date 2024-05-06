@@ -163,7 +163,7 @@ for _ in range(num_debates):
 
     for i, ans in enumerate(answers[-1]):
         if ans.isdigit() or (ans.startswith('-') and ans[1:].isdigit()):
-            if int(ans) == truth:
+            if ans == truth:
                 agents_correct[i] +=1
                 agents_flag[i] =1
             else: 
