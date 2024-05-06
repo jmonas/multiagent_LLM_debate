@@ -147,7 +147,7 @@ def run_debate(number_of_rounds, number_of_agents, temperature):
 
 
 num_debates = 200
-number_of_agents = 4
+number_of_agents = 5
 num_rounds = 3
 agents_correct = [0] * number_of_agents
 temperature = .4
