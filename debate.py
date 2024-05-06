@@ -9,7 +9,7 @@ import os
 from datetime import datetime
 # Initialize the models and tokenizer
 tokenizer = AutoTokenizer.from_pretrained("gg-hf/gemma-7b-it", cache_dir="/scratch/gpfs/jmonas/.cache/")
-model = AutoModelForCausalLM.from_pretrained("/scratch/gpfs/jmonas/.cache/gemma-7b-it-8bit/", device_map="auto")
+model = AutoModelForCausalLM.from_pretrained("/scratch/gpfs/jmonas/.cache/gemma-7b-it-8bit/")
 
 
 
