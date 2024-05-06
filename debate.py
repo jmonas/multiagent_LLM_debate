@@ -146,11 +146,11 @@ def run_debate(number_of_rounds, number_of_agents, temperature):
 
 
 
-num_debates = 200
+num_debates = 400
 number_of_agents = 3
 num_rounds = 3
 agents_correct = [0] * number_of_agents
-temperature = 0.2
+temperature = 0.3
 current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 json_file_path = f'results/debate_results_{number_of_agents}_{num_rounds}_{current_time}_{str(temperature)}.json'
 
