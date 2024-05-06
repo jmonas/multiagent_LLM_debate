@@ -11,3 +11,4 @@ model = AutoModelForCausalLM.from_pretrained("gg-hf/gemma-7b-it", load_in_8bit=T
 
 # outputs = model.generate(**input_ids)
 # print(tokenizer.decode(outputs[0]))
+ 
