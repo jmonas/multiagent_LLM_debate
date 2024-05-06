@@ -133,8 +133,8 @@ def run_debate(number_of_rounds, number_of_agents, temperature):
         print("\n")
         # print("\n")
         # print("\n")
-    print("CORRECT ANSWER: ", eval(expression))
-    print(final_answers)
+    print("CORRECT ANSWER: ", eval(expression), flush=True)
+    print(final_answers, flush=True)
 
     return expression, eval(expression), final_answers
 
