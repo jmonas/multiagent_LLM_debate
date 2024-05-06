@@ -35,9 +35,6 @@ def format_chat(chat_history):
     return inputs
 
 def generate_round_query(answer):
-    print("dont look", len(answer))
-    print("dont look", answer)
-
     return f"These are the solutions to the problem from other agents(s): {answer}. Using your previous answer and other agent's answers as additional advice, give an updated answer to the question. If you disagree with other agents, explain why. Put '!!!' before your final numerical answer."
 
 def clean_text(response):
@@ -149,11 +146,11 @@ current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 json_file_path = f'results/debate_results_{current_time}.json'
 
 
-num_debates = 2
+num_debates = 200
 number_of_agents = 3
-num_rounds = 4
+num_rounds = 2
 agents_correct = [0] * number_of_agents
-for _ in range(num_debates):
+for debate_round in range(num_debates):
     start_time = time.time()
     expression, truth, answers = run_debate(num_rounds, number_of_agents)
 
@@ -170,6 +167,8 @@ for _ in range(num_debates):
                 agents_flag[i] =1
             else: 
                 agents_flag[i] =0
+        else:
+            agents_flag[i] =0
     if  any(x != stringified_truth for x in answers[0]) and all(x == answers[-1][0] for x in answers[-1]) and answers[-1][0] == stringified_truth:
         print("SUCCESS, WRONG CHANGED RIGHT")
 
@@ -177,6 +176,7 @@ for _ in range(num_debates):
     # if any(x == truth for x in answers[0]) and not all(x == answers[-1][0] for x in answers[-1]):
     #     print("FAILURE, RIGHT CHANGED WRONG ")
     storage_json = {
+        "debate_num": debate_round,
         "problem" :expression,
         "truth" :  stringified_truth,
         "round_answers" : answers,
