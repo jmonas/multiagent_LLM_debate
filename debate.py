@@ -157,6 +157,8 @@ for _ in range(num_debates):
     start_time = time.time()
     expression, truth, answers = run_debate(num_rounds, number_of_agents)
 
+    answers = [int(ans) for ans in answers]
+
     wrong_to_right = False
     # right_to_wrong = False
     agents_flag = {}
