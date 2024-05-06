@@ -150,11 +150,11 @@ num_debates = 200
 number_of_agents = 5
 num_rounds = 3
 agents_correct = [0] * number_of_agents
-temperatures = [0.2, 0.8, 0.8]
+temperatures = [0.2, .4, .4]
 current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-json_file_path = f'results/debate_results_leader_{number_of_agents}_{num_rounds}_{current_time}_{str(temperatures[0])}.json'
+json_file_path = f'results/debate_results_leader_{number_of_agents}_{num_rounds}_{current_time}_{str(temperatures)}.json'
 
-print(f"{num_debates}  - {number_of_agents} -  {num_rounds}   - {str(temperatures[0])}", flush=True)
+print(f"{num_debates}  - {number_of_agents} -  {num_rounds}   - {str(temperatures)}", flush=True)
 for debate_round in range(num_debates):
     print("START", flush=True)
     start_time = time.time()
