@@ -142,14 +142,16 @@ def run_debate(number_of_rounds, number_of_agents):
 
 
 
-current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-json_file_path = f'results/debate_results_{current_time}.json'
+
 
 
 num_debates = 200
 number_of_agents = 3
 num_rounds = 2
 agents_correct = [0] * number_of_agents
+current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+json_file_path = f'results/debate_results_{number_of_agents}_{num_rounds}_{current_time}.json'
+
 for debate_round in range(num_debates):
     start_time = time.time()
     expression, truth, answers = run_debate(num_rounds, number_of_agents)
