@@ -37,12 +37,11 @@ class CustomDataset(Dataset):
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Load the pretrained model and tokenizer
-model_id = "google/gemma-2b-it"
-tokenizer = AutoTokenizer.from_pretrained(model_id)
-model = AutoModelForCausalLM.from_pretrained(model_id).to(device)
+tokenizer = AutoTokenizer.from_pretrained("google/gemma-2b-it", cache_dir="/scratch/gpfs/jmonas/.cache/")
+model = AutoModelForCausalLM.from_pretrained("google/gemma-2b-it", torch_dtype=torch.float16,cache_dir="/scratch/gpfs/jmonas/.cache/")
 
 # Load your custom dataset
-dataset_path = 'combined_2_agents_3_rounds_results.json'
+dataset_path = 'new_combined_2_agents_3_rounds_results.json'
 train_dataset = CustomDataset(dataset_path, tokenizer)
 
 # Trainer setup
