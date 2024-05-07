@@ -19,7 +19,7 @@ from transformers import (AutoModelForCausalLM,
                           BitsAndBytesConfig, 
                           TrainingArguments, 
                           pipeline, 
-                          logging)
+                          )
 from datasets import Dataset
 from peft import LoraConfig, PeftConfig
 from trl import SFTTrainer
