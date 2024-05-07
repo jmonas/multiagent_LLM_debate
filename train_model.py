@@ -36,7 +36,7 @@ class LossLoggingCallback(TrainerCallback):
             logger.info(f"Step {state.global_step}: Loss {logs['loss']}")
 
 # Load and prepare the custom JSON dataset
-class CustomDataset(Dataset): 
+class CustomDataset(torch.utils.data.Dataset):
     def __init__(self, json_path, tokenizer, max_length=125,):
         with open(json_path, 'r') as file:
             data = json.load(file)  # Load and parse the JSON into a dictionary
