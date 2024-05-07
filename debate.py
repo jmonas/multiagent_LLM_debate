@@ -146,13 +146,13 @@ def run_debate(number_of_rounds, number_of_agents, temperature):
 
 
 
-num_debates = 300
-number_of_agents = 3
+num_debates = 10000
+number_of_agents = 2
 num_rounds = 3
 agents_correct = [0] * number_of_agents
-temperature = 0.7
-current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-json_file_path = f'results/debate_results_{number_of_agents}_{num_rounds}_{current_time}_{str(temperature)}.json'
+temperature = 0.4
+# current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+json_file_path = f'debate_results_2_3_2024-05-06_06-15-05_0.4.json'
 
 print(f"{num_debates}  - {number_of_agents} -  {num_rounds}   - {str(temperature)}", flush=True)
 for debate_round in range(num_debates):
