@@ -39,7 +39,7 @@ class LossLoggingCallback(TrainerCallback):
 class CustomDataset(Dataset): 
     def __init__(self, json_path, tokenizer, max_length=125,):
         with open(json_path, 'r') as file:
-            self.data = json.load(file)
+            self.dataset = json.load(file)
         self.tokenizer = tokenizer
         self.max_length = max_length
     
@@ -47,7 +47,7 @@ class CustomDataset(Dataset):
         return len(self.data)
     
     def __getitem__(self, idx):
-        item = self.data[idx]
+        item = self.dataset[idx]
         problem = f"What is the answer to: {item['problem']}?"
         answer = item['round_answers'][-1][0]  # Assuming this is the correct answer
 
