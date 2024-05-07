@@ -11,17 +11,22 @@ def read_json(file_path):
 # Load the JSON data from the file
 data = read_json(file_path)
 
-# Assuming data is a list of dictionaries
+# Initialize a dictionary to keep track of the sums for "0" and "1"
+flag_sums = {"0": 0, "1": 0}
+total_counts = {"0": 0, "1": 0}
+
+# Sum values across all entries
 for entry in data:
-    # Get the 'final_agent_ans_flags' dictionary from each entry
-    if 'final_agent_ans_flags' in entry:
-        flags = entry['final_agent_ans_flags']
-        # Calculate the total sum of the values
-        total_sum = sum(flags.values())
-        # Get the number of elements in the 'final_agent_ans_flags'
-        num_elements = len(flags)
-        # Calculate the accuracy
-        accuracy = total_sum / num_elements
-        print("Accuracy:", accuracy)
+    flags = entry.get('final_agent_ans_flags', {})
+    for key in ["0", "1"]:
+        if key in flags:
+            flag_sums[key] += flags[key]
+            total_counts[key] += 1
+
+# Calculate the accuracy for each flag
+for key in ["0", "1"]:
+    if total_counts[key] > 0:
+        accuracy = flag_sums[key] / total_counts[key]
+        print(f"Accuracy for flag {key}: {accuracy:.2f}")
     else:
-        print("No 'final_agent_ans_flags' found in entry.")
+        print(f"No data found for flag {key}")
