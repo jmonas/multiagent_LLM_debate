@@ -1,7 +1,7 @@
 import json
 
 # Path to the JSON file
-file_path = 'new_combined_2_agents_3_rounds_results.json'
+file_path = '/ debate_results_5_3_2024-05-06_05-10-51_0.4.json'
 
 # Function to read JSON data from a file
 def read_json(file_path):
