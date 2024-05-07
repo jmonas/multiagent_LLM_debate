@@ -5,6 +5,26 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments,
 from transformers import TrainerCallback
 import logging
 
+import numpy as np
+import pandas as pd
+import os
+from tqdm import tqdm
+
+import torch
+import torch.nn as nn
+
+import transformers
+from transformers import (AutoModelForCausalLM, 
+                          AutoTokenizer, 
+                          BitsAndBytesConfig, 
+                          TrainingArguments, 
+                          pipeline, 
+                          logging)
+from datasets import Dataset
+from peft import LoraConfig, PeftConfig
+from trl import SFTTrainer
+
+
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -29,49 +49,98 @@ class CustomDataset(Dataset):
     def __getitem__(self, idx):
         item = self.data[idx]
         problem = f"What is the answer to: {item['problem']}?"
-        answer = item['round_answers'][-1][0]  # Assuming the last answer is the correct one to learn
+        answer = item['round_answers'][-1][0]  # Assuming this is the correct answer
 
-        # Tokenize problem and answer separately to set answer as labels
-        input_encodings = self.tokenizer(problem, max_length=self.max_length, truncation=True, padding='max_length', return_tensors="pt")
-        label_encodings = self.tokenizer(answer, max_length=self.max_length, truncation=True, padding='max_length', return_tensors="pt")
+        # Tokenize the problem
+        tokenized_problem = self.tokenizer.encode_plus(
+            problem,
+            add_special_tokens=True,
+            max_length=self.max_length,
+            padding='max_length',
+            truncation=True,
+            return_attention_mask=True,
+            return_tensors='pt'  # Return PyTorch tensors
+        )
 
-        # Prepare input_ids and labels
-        input_ids = input_encodings['input_ids'].squeeze(0)
-        labels = label_encodings['input_ids'].squeeze(0)
+        # Tokenize the answer
+        tokenized_answer = self.tokenizer.encode_plus(
+            answer,
+            add_special_tokens=True,
+            max_length=self.max_length,
+            padding='max_length',
+            truncation=True,
+            return_attention_mask=True,
+            return_tensors='pt'
+        )
 
-        # Masks out padding from labels, replace with -100 which is ignored by the loss function
-        labels[labels == self.tokenizer.pad_token_id] = -100
-
-        return {'input_ids': input_ids, 'labels': labels}
-    
+        return {
+            'input_ids': tokenized_problem['input_ids'].flatten(),
+            'attention_mask': tokenized_problem['attention_mask'].flatten(),
+            'labels': tokenized_answer['input_ids'].flatten(),
+            'decoder_attention_mask': tokenized_answer['attention_mask'].flatten()
+        }
+        
 # CUDA Setup
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Load the pretrained model and tokenizer
 tokenizer = AutoTokenizer.from_pretrained("google/gemma-2b-it", cache_dir="/scratch/gpfs/jmonas/.cache/")
 model = AutoModelForCausalLM.from_pretrained("google/gemma-2b-it", torch_dtype=torch.float16, cache_dir="/scratch/gpfs/jmonas/.cache/")
+model.to(device)  # Send model to GPU
 
 # Load your custom dataset
 dataset_path = 'new_combined_2_agents_3_rounds_results.json'
 train_dataset = CustomDataset(dataset_path, tokenizer)
 
-# Trainer setup
-training_args = TrainingArguments(
-    output_dir='/scratch/gpfs/jmonas/gemma2B',
-    num_train_epochs=3,
-    per_device_train_batch_size=16,
-    warmup_steps=500,
-    weight_decay=0.01,
-    logging_dir='./logs',
-    logging_steps=10,
+
+
+
+peft_config = LoraConfig(
+    lora_alpha=16,
+    lora_dropout=0.1,
+    r=64,
+    bias="none",
+    task_type="CAUSAL_LM",
+    target_modules="all-linear",
 )
 
-trainer = Trainer(
+training_arguments = TrainingArguments(
+    output_dir="logs",
+    num_train_epochs=5,
+    gradient_checkpointing=True,
+    per_device_train_batch_size=1,
+    gradient_accumulation_steps=8,
+    optim="paged_adamw_32bit",
+    save_steps=0,
+    logging_steps=25,
+    learning_rate=2e-4,
+    weight_decay=0.001,
+    fp16=True,
+    bf16=False,
+    max_grad_norm=0.3,
+    max_steps=-1,
+    warmup_ratio=0.03,
+    group_by_length=False,
+    evaluation_strategy='steps',
+    eval_steps = 112,
+    eval_accumulation_steps=1,
+    lr_scheduler_type="cosine",
+    report_to="tensorboard",
+)
+
+trainer = SFTTrainer(
     model=model,
-    args=training_args,
     train_dataset=train_dataset,
-    callbacks=[LossLoggingCallback()]  # Add your custom callback here
+    peft_config=peft_config,
+    dataset_text_field="text",
+    tokenizer=tokenizer,
+    args=training_arguments,
+    packing=False,
+    max_seq_length=125,
 )
 
-# Start training
+# Train model
 trainer.train()
+
+# Save trained model
+trainer.model.save_pretrained("trained-model")
