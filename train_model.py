@@ -39,9 +39,10 @@ class LossLoggingCallback(TrainerCallback):
 class CustomDataset(Dataset): 
     def __init__(self, json_path, tokenizer, max_length=125,):
         with open(json_path, 'r') as file:
-            self.data = json.load(file)
-                # Assuming data is a list of dictionaries
-        self._data = Dataset.from_dict(self.data )
+            data = json.load(file)  # Load and parse the JSON into a dictionary
+
+        # Assuming data is a list of dictionaries
+        self.data = data  # Store the data as an attribute
         self.tokenizer = tokenizer
         self.max_length = max_length
     
