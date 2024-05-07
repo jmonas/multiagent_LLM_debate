@@ -25,10 +25,11 @@ for entry in data:
     local_right_to_wrong = 0
     for i, ans in enumerate(round_answers[0]):
         if ans == truth and round_answers[-1][i] != truth:
-            local_right_to_wrong = 1
+            right_to_wrong += 1
 
-    right_to_wrong+=local_right_to_wrong
-
+    for i, ans in enumerate(round_answers[0]):
+        if ans != truth and round_answers[-1][i] == truth:
+            wrong_to_right += 1
 
 
 print("total items: ", len(data))
