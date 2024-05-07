@@ -22,7 +22,7 @@ data2 = read_json(file2)
 combined_data = data1 + data2
 
 # Define the output file path
-output_file = 'combined_2_agents_3_rounds_results.json'
+output_file = 'new_combined_2_agents_3_rounds_results.json'
 
 # Write the combined data to the output file
 write_json(combined_data, output_file)
