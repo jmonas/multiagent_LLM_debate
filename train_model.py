@@ -29,7 +29,7 @@ class CustomDataset(Dataset):
     def __getitem__(self, idx):
         item = self.data[idx]
         problem = f"What is the answer to: {item['problem']}?"
-        answer = item['round_answers'][0]
+        answer = item['round_answers'][-1][0]
         encoding = self.tokenizer(problem, answer, max_length=self.max_length, truncation=True, padding='max_length', return_tensors="pt")
         return {key: val.squeeze(0) for key, val in encoding.items()}
 
