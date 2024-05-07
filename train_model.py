@@ -29,10 +29,21 @@ class CustomDataset(Dataset):
     def __getitem__(self, idx):
         item = self.data[idx]
         problem = f"What is the answer to: {item['problem']}?"
-        answer = item['round_answers'][-1][0]
-        encoding = self.tokenizer(problem, answer, max_length=self.max_length, truncation=True, padding='max_length', return_tensors="pt")
-        return {key: val.squeeze(0) for key, val in encoding.items()}
+        answer = item['round_answers'][-1][0]  # Assuming the last answer is the correct one to learn
 
+        # Tokenize problem and answer separately to set answer as labels
+        input_encodings = self.tokenizer(problem, max_length=self.max_length, truncation=True, padding='max_length', return_tensors="pt")
+        label_encodings = self.tokenizer(answer, max_length=self.max_length, truncation=True, padding='max_length', return_tensors="pt")
+
+        # Prepare input_ids and labels
+        input_ids = input_encodings['input_ids'].squeeze(0)
+        labels = label_encodings['input_ids'].squeeze(0)
+
+        # Masks out padding from labels, replace with -100 which is ignored by the loss function
+        labels[labels == self.tokenizer.pad_token_id] = -100
+
+        return {'input_ids': input_ids, 'labels': labels}
+    
 # CUDA Setup
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
