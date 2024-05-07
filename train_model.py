@@ -17,7 +17,7 @@ class LossLoggingCallback(TrainerCallback):
 
 # Load and prepare the custom JSON dataset
 class CustomDataset(Dataset): 
-    def __init__(self, json_path, tokenizer, max_length=1024):
+    def __init__(self, json_path, tokenizer, max_length=125,):
         with open(json_path, 'r') as file:
             self.data = json.load(file)
         self.tokenizer = tokenizer
@@ -38,7 +38,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Load the pretrained model and tokenizer
 tokenizer = AutoTokenizer.from_pretrained("google/gemma-2b-it", cache_dir="/scratch/gpfs/jmonas/.cache/")
-model = AutoModelForCausalLM.from_pretrained("google/gemma-2b-it", torch_dtype=torch.float16,cache_dir="/scratch/gpfs/jmonas/.cache/")
+model = AutoModelForCausalLM.from_pretrained("google/gemma-2b-it", torch_dtype=torch.float16, cache_dir="/scratch/gpfs/jmonas/.cache/")
 
 # Load your custom dataset
 dataset_path = 'new_combined_2_agents_3_rounds_results.json'
